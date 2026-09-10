@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJS Free Online PDF Compressor - Reduce PDF Size Securely in Browser</title>
-    <meta name="description" content="Compress PDF files instantly and securely in your browser with AJS PDF Compression Engine. 100% free, unlimited, and requires zero server uploads for ultimate privacy.">
-    <meta name="keywords" content="pdf compressor, compress pdf online, reduce pdf size, free pdf compressor, local pdf optimizer, shrink pdf without upload, browser pdf tool">
+    <title>AJS Free Online PDF Suite - Compress, Merge & Split PDFs in Browser</title>
+    <meta name="description" content="Free online PDF tools. Compress, merge, and split PDF files securely and instantly in your browser with AJS PDF Suite. 100% free, unlimited, and zero server uploads.">
+    <meta name="keywords" content="pdf compressor, merge pdf online, split pdf online, free pdf toolkit, local pdf optimizer, browser pdf tools">
     <meta name="robots" content="index, follow">
     <!-- Google AdSense Verification Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1638877639702137"
@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Montserrat:wght@700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold-light: #fff3d1;
@@ -36,7 +36,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Ambient Background */
         body {
             background: 
                 radial-gradient(ellipse at 30% 20%, rgba(255, 238, 184, 0.6) 0%, transparent 60%),
@@ -51,7 +50,6 @@
             padding: 24px 12px;
         }
 
-        /* Outer Wrapper */
         .wrapper {
             width: 100%;
             max-width: 980px;
@@ -60,7 +58,45 @@
             gap: 20px;
         }
 
-        /* Main Card Container */
+        /* Prominent Navigation Tabs with Distinct Font */
+        .nav-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .tab-btn {
+            font-family: 'Cinzel', sans-serif;
+            background: linear-gradient(135deg, #fdf8ed 0%, #f4e3c1 100%);
+            border: 2px solid var(--gold-mid);
+            padding: 18px 10px;
+            border-radius: 16px;
+            font-weight: 900;
+            font-size: 1.05rem;
+            color: var(--text-gold);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 18px rgba(122, 84, 19, 0.15);
+            text-align: center;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(122, 84, 19, 0.25);
+            background: linear-gradient(135deg, #fff3d1 0%, #e2b86b 100%);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #c99846 0%, #7a5413 100%);
+            color: #ffffff;
+            border-color: #ffd885;
+            box-shadow: 0 8px 22px rgba(122, 84, 19, 0.35);
+        }
+
         .container {
             width: 100%;
             background: var(--card-bg);
@@ -77,7 +113,6 @@
             flex-direction: row;
         }
 
-        /* Left Panel - Branding & Circular Logo */
         .brand-panel {
             width: 44%;
             background: linear-gradient(160deg, #faf4e8 0%, #eedfca 100%);
@@ -91,7 +126,6 @@
             border-right: 1px solid rgba(201, 152, 70, 0.25);
         }
 
-        /* Frame Plate */
         .logo-frame {
             width: 160px;
             height: 160px;
@@ -120,21 +154,15 @@
             overflow: hidden;
         }
 
-        /* Circular Logo SVG */
-        .logo-svg {
-            width: 100%;
-            height: 100%;
-        }
+        .logo-svg { width: 100%; height: 100%; }
 
-        /* Script Style for AJS */
         .running-text {
             font-family: 'Great Vibes', cursive;
-            font-size: 38px;
+            font-size: 34px;
             fill: url(#goldGradText);
             filter: drop-shadow(0px 2px 3px rgba(110, 73, 17, 0.3));
         }
 
-        /* Circular Curved Text */
         .curved-text {
             font-family: 'Cinzel', serif;
             font-size: 7.2px;
@@ -143,7 +171,6 @@
             fill: url(#goldGradText);
         }
 
-        /* Branding Title */
         .brand-title {
             margin: 0;
             font-family: 'Cinzel', 'Playfair Display', serif;
@@ -158,7 +185,6 @@
             line-height: 1.3;
         }
 
-        /* Feature Badges */
         .feature-highlights {
             margin-top: 18px;
             display: flex;
@@ -169,6 +195,7 @@
         }
 
         .highlight-item {
+            font-family: 'Cinzel', sans-serif;
             font-size: 0.78rem;
             font-weight: 700;
             color: var(--text-gold);
@@ -179,7 +206,6 @@
             letter-spacing: 0.2px;
         }
 
-        /* Security Lock Badge */
         .security-badge {
             margin-top: 14px;
             display: flex;
@@ -191,18 +217,14 @@
             border: 1px solid rgba(201, 152, 70, 0.4);
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(122, 84, 19, 0.08);
-            font-size: 0.75rem;
+            font-family: 'Cinzel', sans-serif;
+            font-size: 0.72rem;
             font-weight: 800;
             color: #7a5413;
         }
 
-        .security-badge svg {
-            width: 14px;
-            height: 14px;
-            fill: #7a5413;
-        }
+        .security-badge svg { width: 14px; height: 14px; fill: #7a5413; }
 
-        /* Right Panel - Conversion Controls */
         .controls-panel {
             width: 56%;
             padding: 36px;
@@ -223,7 +245,6 @@
             line-height: 1.4;
         }
 
-        /* CAPTCHA / Verification Box */
         .captcha-box {
             background: linear-gradient(135deg, #fdf8ed 0%, #f7ecd7 100%);
             border: 1px solid rgba(201, 152, 70, 0.4);
@@ -236,36 +257,11 @@
             box-shadow: inset 0 1px 3px rgba(255,255,255,0.8);
         }
 
-        .captcha-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .captcha-left { display: flex; align-items: center; gap: 12px; }
+        .captcha-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: #7a5413; }
+        .captcha-text { font-size: 0.82rem; font-weight: 700; color: var(--text-dark); }
+        .captcha-badge { font-family: 'Cinzel', sans-serif; font-size: 0.68rem; font-weight: 800; color: var(--text-gold); letter-spacing: 0.5px; text-transform: uppercase; text-align: right; opacity: 0.8; }
 
-        .captcha-checkbox {
-            width: 22px;
-            height: 22px;
-            cursor: pointer;
-            accent-color: #7a5413;
-        }
-
-        .captcha-text {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .captcha-badge {
-            font-size: 0.68rem;
-            font-weight: 800;
-            color: var(--text-gold);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            text-align: right;
-            opacity: 0.8;
-        }
-
-        /* Form Controls Lock State */
         .form-disabled {
             opacity: 0.45;
             pointer-events: none;
@@ -275,20 +271,21 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 18px;
             margin-bottom: 20px;
         }
 
         .group { margin-bottom: 0; }
-        .group-full { grid-column: span 2; }
 
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 700;
+            font-family: 'Cinzel', sans-serif;
+            font-weight: 800;
             font-size: 0.85rem;
             color: var(--text-gold);
+            letter-spacing: 0.5px;
         }
 
         .file-dropzone {
@@ -323,11 +320,9 @@
             pointer-events: none;
         }
 
-        .file-dropzone-text strong {
-            color: var(--text-gold);
-        }
+        .file-dropzone-text strong { color: var(--text-gold); }
 
-        select {
+        select, input[type="text"] {
             width: 100%;
             padding: 12px 14px;
             background: var(--input-bg);
@@ -336,7 +331,6 @@
             color: var(--text-dark);
             font-size: 0.88rem;
             outline: none;
-            cursor: pointer;
         }
 
         .range-header {
@@ -382,19 +376,17 @@
             background: linear-gradient(135deg, #c99846 0%, #7a5413 100%);
             border: 1px solid #ffd885;
             border-radius: 12px;
-            font-weight: 700;
+            font-family: 'Cinzel', sans-serif;
+            font-weight: 800;
             font-size: 0.95rem;
+            letter-spacing: 1px;
             color: #ffffff;
             cursor: pointer;
             box-shadow: 0 6px 18px rgba(122, 84, 19, 0.25);
             transition: all 0.2s ease;
         }
 
-        .btn-submit:hover {
-            opacity: 0.95;
-            transform: translateY(-1px);
-        }
-
+        .btn-submit:hover { opacity: 0.95; transform: translateY(-1px); }
         .btn-submit:disabled {
             background: rgba(122, 84, 19, 0.2);
             color: rgba(60, 40, 10, 0.4);
@@ -426,18 +418,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
 
-        .stats-row-inline {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 12px;
-            font-size: 0.82rem;
-        }
-
-        .stats-item { display: flex; flex-direction: column; }
-        .stats-label { color: var(--text-muted); margin-bottom: 2px; }
-        .stats-val { font-weight: 700; color: var(--text-dark); }
-
         .btn-download {
             display: block;
             width: 100%;
@@ -446,13 +426,17 @@
             color: #ffffff;
             padding: 10px;
             text-decoration: none;
-            font-weight: 700;
+            font-family: 'Cinzel', sans-serif;
+            font-weight: 800;
             font-size: 0.88rem;
+            letter-spacing: 0.5px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
         }
 
-        /* SEO Content & FAQ Section for Search Engine Rankings */
+        .tool-section { display: none; }
+        .tool-section.active { display: block; }
+
         .seo-section {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -468,23 +452,10 @@
             color: var(--text-gold);
             margin-top: 0;
             margin-bottom: 12px;
-            letter-spacing: 0.5px;
         }
 
-        .seo-section h3 {
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            margin-top: 16px;
-            margin-bottom: 6px;
-        }
+        .seo-section p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; }
 
-        .seo-section p {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-
-        /* Copyright & Legal Details Card */
         .copyright-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -510,14 +481,20 @@
             .container { flex-direction: column; }
             .brand-panel { width: 100%; padding: 30px 20px; border-right: none; border-bottom: 1px solid rgba(201, 152, 70, 0.2); }
             .controls-panel { width: 100%; padding: 24px; }
-            .form-grid { grid-template-columns: 1fr; }
-            .group-full { grid-column: span 1; }
+            .nav-tabs { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
+    <!-- Prominent Navigation Tabs with Distinct Modern Font -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTool('compress')">Compress PDF</button>
+        <button class="tab-btn" onclick="switchTool('merge')">Merge PDFs</button>
+        <button class="tab-btn" onclick="switchTool('split')">Split PDF</button>
+    </div>
+
     <!-- Main Tool Container -->
     <div class="container">
         <!-- Left Panel Branding -->
@@ -537,25 +514,32 @@
                                 <stop offset="50%" stop-color="#c99846" />
                                 <stop offset="100%" stop-color="#6e4911" />
                             </linearGradient>
-                            <path id="topCurvePath" d="M 16,50 A 34,34 0 1,1 84,50" />
-                            <path id="bottomCurvePath" d="M 84,50 A 34,34 0 0,1 16,50" />
+                            <!-- Path for AJS on upper side -->
+                            <path id="topCurvePath" d="M 18,50 A 32,32 0 1,1 82,50" />
+                            <!-- Corrected Downside Path: drawn left-to-right across the bottom arc so text sits upright and reads left-to-right -->
+                            <path id="bottomCurvePath" d="M 18,50 A 32,32 0 0,0 82,50" />
                         </defs>
                         <circle cx="50" cy="50" r="44" stroke="url(#ringGrad)" stroke-width="1.5" fill="none" opacity="0.8" />
                         <circle cx="50" cy="50" r="22" stroke="url(#ringGrad)" stroke-width="0.8" fill="none" opacity="0.5" stroke-dasharray="2 2" />
-                        <text class="curved-text">
-                            <textPath href="#topCurvePath" startOffset="50%" text-anchor="middle">PDF COMPRESSION</textPath>
+                        
+                        <!-- AJS at top upper side -->
+                        <text class="curved-text" font-size="9.5" font-weight="900" letter-spacing="2.5px">
+                            <textPath href="#topCurvePath" startOffset="50%" text-anchor="middle">A J S</textPath>
                         </text>
-                        <text class="curved-text">
-                            <textPath href="#bottomCurvePath" startOffset="50%" text-anchor="middle">E N G I N E</textPath>
+
+                        <!-- PDF SUITE ENGINE perfectly upright and readable along the downside arc -->
+                        <text class="curved-text" font-size="5.0" font-weight="800" letter-spacing="0.8px">
+                            <textPath href="#bottomCurvePath" startOffset="50%" text-anchor="middle">PDF SUITE ENGINE</textPath>
                         </text>
-                        <text x="50%" y="58%" text-anchor="middle" class="running-text">Ajs</text>
+
+                        <text x="50%" y="54%" text-anchor="middle" class="running-text">Ajs</text>
                     </svg>
                 </div>
             </div>
-            <h1 class="brand-title">AJS PDF COMPRESSION ENGINE</h1>
+            <h1 class="brand-title">AJS PDF SUITE ENGINE</h1>
             
             <div class="feature-highlights">
-                <div class="highlight-item">👑 Unlimited Free Access — Zero Cost Ever</div>
+                <div class="highlight-item">👑 Unlimited Free Client Tools</div>
             </div>
 
             <div class="security-badge">
@@ -566,9 +550,9 @@
             </div>
         </div>
 
-        <!-- Right Panel Conversion Controls -->
+        <!-- Right Panel Controls -->
         <div class="controls-panel">
-            <div class="tagline-banner">
+            <div class="tagline-banner" id="taglineBanner">
                 🎯 Shrink any PDF instantly with total precision — tailored by you, optimized in seconds.
             </div>
 
@@ -578,240 +562,295 @@
                     <input type="checkbox" id="captchaCheck" class="captcha-checkbox" onchange="toggleFormAccess(this.checked)">
                     <span class="captcha-text">Verify you are human to proceed</span>
                 </div>
-                <div class="captcha-badge">
-                    🛡️ Security Gate
+                <div class="captcha-badge">🛡️ Security Gate</div>
+            </div>
+
+            <!-- FORM 1: COMPRESS -->
+            <div id="tool-compress" class="tool-section active">
+                <div id="formContainer1" class="form-disabled">
+                    <div class="form-grid">
+                        <div class="group">
+                            <label>Select Document</label>
+                            <div class="file-dropzone">
+                                <input type="file" id="fileInput" accept="application/pdf" onchange="handleFileSelect(this, 'dropzoneText1')">
+                                <div class="file-dropzone-text" id="dropzoneText1">
+                                    <strong>Choose a file</strong> or drag & drop PDF here
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <label for="docType">Document Profile</label>
+                            <select id="docType">
+                                <option value="text">Digital Text Book</option>
+                                <option value="scanned">Scanned Book / Camera Photos</option>
+                            </select>
+                        </div>
+                        <div class="group">
+                            <div class="range-header">
+                                <label style="margin: 0;">Target Reduction</label>
+                                <span id="pctValue" class="pct-badge">~50%</span>
+                            </div>
+                            <input type="range" id="reductionPct" min="20" max="80" value="50" step="5" oninput="updatePct(this.value)">
+                        </div>
+                    </div>
+                    <button id="compressBtn" class="btn-submit" onclick="compressPDF()" disabled>Compress PDF</button>
+                    <div id="status1" class="status-box"></div>
+                    <div id="result1" class="result-card">
+                        <a id="downloadLink1" class="btn-download" href="#" download="AJS_compressed.pdf">Download Compressed PDF</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Form Body (Locked until CAPTCHA checked) -->
-            <div id="formContainer" class="form-disabled">
-                <div class="form-grid">
-                    <div class="group group-full">
-                        <label>Select Document</label>
-                        <div class="file-dropzone">
-                            <input type="file" id="fileInput" accept="application/pdf" onchange="handleFileSelect(this)">
-                            <div class="file-dropzone-text" id="dropzoneText">
-                                <strong>Choose a file</strong> or drag & drop PDF here
+            <!-- FORM 2: MERGE -->
+            <div id="tool-merge" class="tool-section">
+                <div id="formContainer2" class="form-disabled">
+                    <div class="form-grid">
+                        <div class="group">
+                            <label>Select Multiple PDF Files</label>
+                            <div class="file-dropzone">
+                                <input type="file" id="mergeFileInput" accept="application/pdf" multiple onchange="handleMergeFiles(this)">
+                                <div class="file-dropzone-text" id="dropzoneText2">
+                                    <strong>Choose files</strong> or drag & drop PDFs here
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="group">
-                        <label for="docType">Document Profile</label>
-                        <select id="docType">
-                            <option value="text">Digital Text Book</option>
-                            <option value="scanned">Scanned Book / Camera Photos</option>
-                        </select>
-                    </div>
-
-                    <div class="group">
-                        <div class="range-header">
-                            <label style="margin: 0;">Target Reduction</label>
-                            <span id="pctValue" class="pct-badge">~50%</span>
-                        </div>
-                        <input type="range" id="reductionPct" min="20" max="80" value="50" step="5" oninput="updatePct(this.value)">
+                    <button id="mergeBtn" class="btn-submit" onclick="mergePDFs()" disabled>Merge PDFs</button>
+                    <div id="status2" class="status-box"></div>
+                    <div id="result2" class="result-card">
+                        <a id="downloadLink2" class="btn-download" href="#" download="AJS_merged.pdf">Download Merged PDF</a>
                     </div>
                 </div>
+            </div>
 
-                <button id="compressBtn" class="btn-submit" onclick="compressPDF()" disabled>Compress PDF</button>
-
-                <div id="status" class="status-box"></div>
-
-                <div id="result" class="result-card">
-                    <div class="stats-row-inline">
-                        <div class="stats-item">
-                            <span class="stats-label">Original</span>
-                            <span id="origSize" class="stats-val">-</span>
+            <!-- FORM 3: SPLIT -->
+            <div id="tool-split" class="tool-section">
+                <div id="formContainer3" class="form-disabled">
+                    <div class="form-grid">
+                        <div class="group">
+                            <label>Select PDF to Split</label>
+                            <div class="file-dropzone">
+                                <input type="file" id="splitFileInput" accept="application/pdf" onchange="handleFileSelect(this, 'dropzoneText3')">
+                                <div class="file-dropzone-text" id="dropzoneText3">
+                                    <strong>Choose a file</strong> or drag & drop PDF here
+                                </div>
+                            </div>
                         </div>
-                        <div class="stats-item">
-                            <span class="stats-label">Compressed</span>
-                            <span id="compSize" class="stats-val">-</span>
-                        </div>
-                        <div class="stats-item">
-                            <span class="stats-label">Savings</span>
-                            <span id="savings" class="stats-val" style="color: var(--success-color);">-</span>
+                        <div class="group">
+                            <label for="splitPages">Pages to Extract (e.g. 1-3, 5)</label>
+                            <input type="text" id="splitPages" placeholder="e.g., 1-3 or 2">
                         </div>
                     </div>
-                    <a id="downloadLink" class="btn-download" href="#" download="AJS_compressed.pdf">Download Compressed PDF</a>
+                    <button id="splitBtn" class="btn-submit" onclick="splitPDF()" disabled>Split PDF</button>
+                    <div id="status3" class="status-box"></div>
+                    <div id="result3" class="result-card">
+                        <a id="downloadLink3" class="btn-download" href="#" download="AJS_split.pdf">Download Split PDF</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SEO Content Section to Help Google Index and Rank the Website -->
+    <!-- SEO Content Section -->
     <section class="seo-section">
-        <h2>About AJS Free PDF Compression Engine</h2>
+        <h2>AJS Free Browser-Based PDF Suite</h2>
         <p>
-            Welcome to the <strong>AJS PDF Compression Engine</strong>, a high-performance, browser-based utility designed to help students, professionals, and remote workers instantly reduce large PDF file sizes. Whether you need to compress heavy scanned documents for email attachments or optimize digital ebooks, our tool gets the job done right in your browser.
-        </p>
-
-        <h3>Why Choose Our Free Online PDF Compressor?</h3>
-        <p>
-            Unlike traditional online tools that require you to upload your confidential files to remote servers, AJS utilizes client-side rendering libraries (`pdf-lib` and `pdf.js`). Your sensitive financial statements, legal records, and personal books never leave your computer, ensuring absolute data privacy.
-        </p>
-
-        <h3>How to Shrink PDF Files Online</h3>
-        <p>
-            1. Check the human verification security gate.<br>
-            2. Upload your target PDF document.<br>
-            3. Choose your document type (Digital Text or Scanned Images).<br>
-            4. Adjust the target reduction percentage slider.<br>
-            5. Click <strong>Compress PDF</strong> and download your optimized file instantly.
+            Welcome to the <strong>AJS PDF Suite Engine</strong>. Compress, merge, and split your confidential PDF documents directly within your browser window. All document operations execute securely on your local machine with zero external uploads.
         </p>
     </section>
 
-    <!-- Copyright & Legal Details Card -->
+    <!-- Copyright Footer -->
     <footer class="copyright-card">
-        <div class="copyright-title">© AJS PDF COMPRESSION ENGINE. ALL RIGHTS RESERVED.</div>
-        <div>
-            Designed & Developed for client-side document optimization. All file operations take place locally on your personal device. 
-            No documents are stored, uploaded, or transmitted to any external servers.
-        </div>
+        <div class="copyright-title">© AJS PDF SUITE ENGINE. ALL RIGHTS RESERVED.</div>
+        <div>Client-side document utility. No files are transmitted to external servers.</div>
     </footer>
 </div>
 
 <script>
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    function toggleFormAccess(isChecked) {
-        const formContainer = document.getElementById('formContainer');
-        const compressBtn = document.getElementById('compressBtn');
-
-        if (isChecked) {
-            formContainer.classList.remove('form-disabled');
-            compressBtn.disabled = false;
-        } else {
-            formContainer.classList.add('form-disabled');
-            compressBtn.disabled = true;
+    function switchTool(toolName) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tool-section').forEach(sec => sec.classList.remove('active'));
+        
+        const clickedBtn = event ? event.currentTarget : document.querySelector('.tab-btn');
+        if(toolName === 'compress') {
+            clickedBtn.classList.add('active');
+            document.getElementById('tool-compress').classList.add('active');
+            document.getElementById('taglineBanner').innerText = '🎯 Shrink any PDF instantly with total precision — tailored by you, optimized in seconds.';
+        } else if(toolName === 'merge') {
+            clickedBtn.classList.add('active');
+            document.getElementById('tool-merge').classList.add('active');
+            document.getElementById('taglineBanner').innerText = '🔗 Combine multiple PDF documents into a single organized file instantly in your browser.';
+        } else if(toolName === 'split') {
+            clickedBtn.classList.add('active');
+            document.getElementById('tool-split').classList.add('active');
+            document.getElementById('taglineBanner').innerText = '✂️ Extract specific pages or split large PDF files effortlessly with complete privacy.';
         }
+    }
+
+    function toggleFormAccess(isChecked) {
+        ['formContainer1', 'formContainer2', 'formContainer3'].forEach(id => {
+            const el = document.getElementById(id);
+            if(isChecked) el.classList.remove('form-disabled');
+            else el.classList.add('form-disabled');
+        });
+        document.getElementById('compressBtn').disabled = !isChecked;
+        document.getElementById('mergeBtn').disabled = !isChecked;
+        document.getElementById('splitBtn').disabled = !isChecked;
     }
 
     function updatePct(val) {
         document.getElementById('pctValue').innerText = `~${val}%`;
     }
 
-    function handleFileSelect(input) {
-        const dropzoneText = document.getElementById('dropzoneText');
+    function handleFileSelect(input, textId) {
+        const dropzoneText = document.getElementById(textId);
         if (input.files && input.files[0]) {
             dropzoneText.innerHTML = `Selected: <strong>${input.files[0].name}</strong>`;
-        } else {
-            dropzoneText.innerHTML = `<strong>Choose a file</strong> or drag & drop PDF here`;
+        }
+    }
+
+    function handleMergeFiles(input) {
+        const dropzoneText = document.getElementById('dropzoneText2');
+        if (input.files && input.files.length > 0) {
+            dropzoneText.innerHTML = `Selected: <strong>${input.files.length} files</strong>`;
         }
     }
 
     async function compressPDF() {
-        const isVerified = document.getElementById('captchaCheck').checked;
-        if (!isVerified) {
-            alert('Please complete the human verification check first!');
-            return;
-        }
-
         const fileInput = document.getElementById('fileInput');
         const docType = document.getElementById('docType').value;
         const targetPct = parseInt(document.getElementById('reductionPct').value);
-        const compressBtn = document.getElementById('compressBtn');
-        const status = document.getElementById('status');
-        const result = document.getElementById('result');
+        const btn = document.getElementById('compressBtn');
+        const status = document.getElementById('status1');
+        const result = document.getElementById('result1');
 
-        if (!fileInput.files.length) {
-            alert('Please select a PDF file first!');
-            return;
-        }
-
-        const file = fileInput.files[0];
-        const origSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-
-        compressBtn.disabled = true;
-        status.style.display = 'block';
-        result.style.display = 'none';
+        if (!fileInput.files.length) { alert('Please select a file!'); return; }
+        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
 
         try {
+            const file = fileInput.files[0];
             const arrayBuffer = await file.arrayBuffer();
             let compressedBlob;
 
             if (docType === 'text') {
-                status.innerText = 'Optimizing document streams...';
-                compressedBlob = await compressDigitalTextPdf(arrayBuffer, targetPct);
+                status.innerText = 'Optimizing text streams...';
+                const { PDFDocument } = PDFLib;
+                const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
+                compressedBlob = new Blob([pdfBytes], { type: 'application/pdf' });
             } else {
-                status.innerText = 'Downsampling page images...';
                 compressedBlob = await compressScannedPdf(arrayBuffer, targetPct, status);
             }
 
-            const compSizeMB = (compressedBlob.size / (1024 * 1024)).toFixed(2);
-            const savings = (((file.size - compressedBlob.size) / file.size) * 100).toFixed(2);
-
-            document.getElementById('origSize').innerText = `${origSizeMB} MB`;
-            document.getElementById('compSize').innerText = `${compSizeMB} MB`;
-            document.getElementById('savings').innerText = savings > 0 ? `${savings}% smaller` : 'Optimized';
-            
-            const downloadUrl = URL.createObjectURL(compressedBlob);
-            const downloadLink = document.getElementById('downloadLink');
-            downloadLink.href = downloadUrl;
-            
-            const originalName = file.name.replace(/\.[^/.]+$/, "");
-            downloadLink.download = `AJS_${originalName}.pdf`;
-            
+            const downloadLink = document.getElementById('downloadLink1');
+            downloadLink.href = URL.createObjectURL(compressedBlob);
+            downloadLink.download = `AJS_compressed_${file.name}`;
             result.style.display = 'block';
-        } catch (e) {
-            console.error(e);
-            alert('Compression error: File may be encrypted or corrupted.');
-        } finally {
-            compressBtn.disabled = false;
-            status.style.display = 'none';
-        }
-    }
-
-    async function compressDigitalTextPdf(arrayBuffer, targetPct) {
-        const { PDFDocument } = PDFLib;
-        const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-        const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
-        return new Blob([pdfBytes], { type: 'application/pdf' });
+        } catch(e) { alert('Compression error.'); }
+        finally { btn.disabled = false; status.style.display = 'none'; }
     }
 
     async function compressScannedPdf(arrayBuffer, targetPct, statusElement) {
         const { PDFDocument } = PDFLib;
         const srcPdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const outPdf = await PDFDocument.create();
-
         const maxDimension = Math.round(1400 - ((targetPct / 100) * 600));
         const jpegQuality = Math.max(0.2, 0.75 - ((targetPct / 100) * 0.5));
 
         for (let i = 1; i <= srcPdf.numPages; i++) {
             statusElement.innerText = `Processing Page ${i} of ${srcPdf.numPages}...`;
-
-            if (i % 5 === 0) await new Promise(r => setTimeout(r, 20));
-
             const page = await srcPdf.getPage(i);
             const baseViewport = page.getViewport({ scale: 1.0 });
             const currentMax = Math.max(baseViewport.width, baseViewport.height);
-            
             const scale = currentMax > maxDimension ? (maxDimension / currentMax) : 0.9;
             const viewport = page.getViewport({ scale: scale });
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = viewport.width;
-            canvas.height = viewport.height;
-
+            canvas.width = viewport.width; canvas.height = viewport.height;
             await page.render({ canvasContext: ctx, viewport: viewport }).promise;
 
             const imgDataUrl = canvas.toDataURL('image/jpeg', jpegQuality);
             const embeddedImg = await outPdf.embedJpg(imgDataUrl);
-
             const newPage = outPdf.addPage([viewport.width, viewport.height]);
-            newPage.drawImage(embeddedImg, {
-                x: 0,
-                y: 0,
-                width: viewport.width,
-                height: viewport.height,
-            });
-
-            canvas.width = 0;
-            canvas.height = 0;
+            newPage.drawImage(embeddedImg, { x: 0, y: 0, width: viewport.width, height: viewport.height });
         }
-
         const outBytes = await outPdf.save();
         return new Blob([outBytes], { type: 'application/pdf' });
+    }
+
+    async function mergePDFs() {
+        const fileInput = document.getElementById('mergeFileInput');
+        const btn = document.getElementById('mergeBtn');
+        const status = document.getElementById('status2');
+        const result = document.getElementById('result2');
+
+        if (fileInput.files.length < 2) { alert('Please select at least 2 PDF files!'); return; }
+        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
+
+        try {
+            const { PDFDocument } = PDFLib;
+            const mergedPdf = await PDFDocument.create();
+
+            for (let i = 0; i < fileInput.files.length; i++) {
+                status.innerText = `Merging file ${i + 1} of ${fileInput.files.length}...`;
+                const arrayBuffer = await fileInput.files[i].arrayBuffer();
+                const pdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                copiedPages.forEach((page) => mergedPdf.addPage(page));
+            }
+
+            const mergedBytes = await mergedPdf.save();
+            const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+            const downloadLink = document.getElementById('downloadLink2');
+            downloadLink.href = URL.createObjectURL(blob);
+            result.style.display = 'block';
+        } catch(e) { alert('Merge error.'); }
+        finally { btn.disabled = false; status.style.display = 'none'; }
+    }
+
+    async function splitPDF() {
+        const fileInput = document.getElementById('splitFileInput');
+        const pagesInput = document.getElementById('splitPages').value;
+        const btn = document.getElementById('splitBtn');
+        const status = document.getElementById('status3');
+        const result = document.getElementById('result3');
+
+        if (!fileInput.files.length || !pagesInput) { alert('Please select a file and enter page numbers!'); return; }
+        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
+
+        try {
+            const { PDFDocument } = PDFLib;
+            const arrayBuffer = await fileInput.files[0].arrayBuffer();
+            const srcDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+            const newDoc = await PDFDocument.create();
+
+            let pageIndices = [];
+            parts = pagesInput.split(',');
+            parts.forEach(part => {
+                if(part.includes('-')) {
+                    let range = part.split('-');
+                    let start = parseInt(range[0]) - 1;
+                    let end = parseInt(range[1]) - 1;
+                    for(let p = start; p <= end; p++) pageIndices.push(p);
+                } else {
+                    pageIndices.push(parseInt(part) - 1);
+                }
+            });
+
+            const validIndices = pageIndices.filter(i => i >= 0 && i < srcDoc.getPageCount());
+            const copiedPages = await newDoc.copyPages(srcDoc, validIndices);
+            copiedPages.forEach(page => newDoc.addPage(page));
+
+            const splitBytes = await newDoc.save();
+            const blob = new Blob([splitBytes], { type: 'application/pdf' });
+            const downloadLink = document.getElementById('downloadLink3');
+            downloadLink.href = URL.createObjectURL(blob);
+            result.style.display = 'block';
+        } catch(e) { alert('Split error. Check page range format.'); }
+        finally { btn.disabled = false; status.style.display = 'none'; }
     }
 </script>
 
