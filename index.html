@@ -482,6 +482,35 @@
 
         .seo-section p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; }
 
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .step-box {
+            background: rgba(201, 152, 70, 0.08);
+            border: 1px solid rgba(201, 152, 70, 0.25);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: left;
+        }
+
+        .step-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--text-gold);
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        .step-box p {
+            font-size: 0.78rem;
+            margin: 0;
+            color: var(--text-muted);
+        }
+
         .copyright-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -508,6 +537,7 @@
             .brand-panel { width: 100%; padding: 30px 20px; border-right: none; border-bottom: 1px solid rgba(201, 152, 70, 0.2); }
             .controls-panel { width: 100%; padding: 24px; }
             .nav-tabs { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -677,12 +707,26 @@
         </section>
     </main>
 
-    <!-- SEO Content Section (Optimized for Search Indexing) -->
+    <!-- SEO Content Section (How It Works & Overview) -->
     <section class="seo-section">
-        <h2>AJS Free Browser-Based PDF Suite Engine</h2>
+        <h2>How AJS PDF Suite Engine Works</h2>
         <p>
-            Welcome to the <strong>AJS PDF Suite Engine</strong> — your ultimate free online toolkit to compress, merge, and split confidential PDF documents directly within your browser window. All document operations execute securely on your local client machine with absolute privacy and zero external server uploads.
+            The <strong>AJS PDF Suite Engine</strong> is engineered to perform all document operations entirely inside your web browser using cutting-edge client-side libraries. Unlike traditional online converters, your files never get uploaded to external web servers, ensuring absolute data security and privacy.
         </p>
+        <div class="steps-grid">
+            <div class="step-box">
+                <h3>1. Select Your Files</h3>
+                <p>Choose or drag and drop your PDF files securely into the browser workspace.</p>
+            </div>
+            <div class="step-box">
+                <h3>2. Process Locally</h3>
+                <p>Your CPU handles compression, merging, or page extraction in milliseconds.</p>
+            </div>
+            <div class="step-box">
+                <h3>3. Download Instantly</h3>
+                <p>Save your optimized or modified PDF files directly to your device without wait times.</p>
+            </div>
+        </div>
     </section>
 
     <!-- Copyright Footer -->
