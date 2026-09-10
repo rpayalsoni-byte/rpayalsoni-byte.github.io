@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJS PDF Compression Engine</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold-light: #fff3d1;
+            --gold-mid: #c99846;
+            --gold-dark: #7a5413;
+            --bg-light: #f9f5ed;
+            --card-bg: rgba(255, 252, 245, 0.94);
+            --card-border: rgba(201, 152, 70, 0.4);
+            --text-gold: #7a5413;
+            --text-dark: #2c1d11;
+            --text-muted: #6e594b;
+            --input-bg: #fdfaf3;
+            --input-border: rgba(201, 152, 70, 0.3);
+            --success-color: #2e7d32;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Ambient Background */
+        body {
+            background: 
+                radial-gradient(ellipse at 30% 20%, rgba(255, 238, 184, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(201, 152, 70, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, #fcf8f0 0%, #f0e4d0 60%, #dfcdb0 100%);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px 12px;
+        }
+
+        /* Outer Wrapper */
+        .wrapper {
+            width: 100%;
+            max-width: 980px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Main Card Container */
+        .container {
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+            box-shadow: 
+                0 25px 50px rgba(122, 84, 19, 0.12),
+                0 0 35px rgba(201, 152, 70, 0.18),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* Left Panel - Branding & Circular Logo */
+        .brand-panel {
+            width: 44%;
+            background: linear-gradient(160deg, #faf4e8 0%, #eedfca 100%);
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            border-right: 1px solid rgba(201, 152, 70, 0.25);
+        }
+
+        /* Frame Plate */
+        .logo-frame {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(135deg, #ffffff 0%, #ffd885 25%, #c99846 60%, #6e4911 100%);
+            box-shadow: 
+                0 12px 28px rgba(122, 84, 19, 0.25),
+                0 0 20px rgba(201, 152, 70, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #fffdf8 0%, #f5e7d0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: inset 0 3px 8px rgba(122, 84, 19, 0.15);
+            border: 1px solid rgba(201, 152, 70, 0.4);
+            overflow: hidden;
+        }
+
+        /* Circular Logo SVG */
+        .logo-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Script Style for AJS */
+        .running-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 38px;
+            fill: url(#goldGradText);
+            filter: drop-shadow(0px 2px 3px rgba(110, 73, 17, 0.3));
+        }
+
+        /* Circular Curved Text */
+        .curved-text {
+            font-family: 'Cinzel', serif;
+            font-size: 7.2px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            fill: url(#goldGradText);
+        }
+
+        /* Branding Title */
+        .brand-title {
+            margin: 0;
+            font-family: 'Cinzel', 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #3d2208 0%, #8c5b13 40%, #523419 70%, #2b1706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 4px rgba(201, 152, 70, 0.25);
+            line-height: 1.3;
+        }
+
+        /* Feature Badges */
+        .feature-highlights {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .highlight-item {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-gold);
+            background: rgba(201, 152, 70, 0.12);
+            border: 1px solid rgba(201, 152, 70, 0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.2px;
+        }
+
+        /* Security Lock Badge */
+        .security-badge {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #fdfaf3;
+            border: 1px solid rgba(201, 152, 70, 0.4);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(122, 84, 19, 0.08);
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #7a5413;
+        }
+
+        .security-badge svg {
+            width: 14px;
+            height: 14px;
+            fill: #7a5413;
+        }
+
+        /* Right Panel - Conversion Controls */
+        .controls-panel {
+            width: 56%;
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tagline-banner {
+            background: linear-gradient(135deg, rgba(201, 152, 70, 0.15) 0%, rgba(122, 84, 19, 0.08) 100%);
+            border-left: 3px solid var(--gold-mid);
+            padding: 10px 14px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        /* CAPTCHA / Verification Box */
+        .captcha-box {
+            background: linear-gradient(135deg, #fdf8ed 0%, #f7ecd7 100%);
+            border: 1px solid rgba(201, 152, 70, 0.4);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.8);
+        }
+
+        .captcha-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .captcha-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #7a5413;
+        }
+
+        .captcha-text {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .captcha-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--text-gold);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            text-align: right;
+            opacity: 0.8;
+        }
+
+        /* Form Controls Lock State */
+        .form-disabled {
+            opacity: 0.45;
+            pointer-events: none;
+            filter: grayscale(30%);
+            transition: all 0.3s ease;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .group { margin-bottom: 0; }
+        .group-full { grid-column: span 2; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-gold);
+        }
+
+        .file-dropzone {
+            position: relative;
+            background: var(--input-bg);
+            border: 2px dashed var(--input-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .file-dropzone:hover {
+            border-color: var(--gold-mid);
+            background: #fffdfa;
+        }
+
+        .file-dropzone input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-dropzone-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+
+        .file-dropzone-text strong {
+            color: var(--text-gold);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            color: var(--text-dark);
+            font-size: 0.88rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .range-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .pct-badge {
+            background: rgba(201, 152, 70, 0.15);
+            color: var(--text-gold);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            border: 1px solid rgba(201, 152, 70, 0.3);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(201, 152, 70, 0.2);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd885, #7a5413);
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #c99846 0%, #7a5413 100%);
+            border: 1px solid #ffd885;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(122, 84, 19, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            background: rgba(122, 84, 19, 0.2);
+            color: rgba(60, 40, 10, 0.4);
+            box-shadow: none;
+            border: 1px solid transparent;
+            cursor: not-allowed;
+        }
+
+        .status-box {
+            margin-top: 14px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(201, 152, 70, 0.12);
+            border: 1px solid rgba(201, 152, 70, 0.3);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-gold);
+            display: none;
+            font-weight: 600;
+        }
+
+        .result-card {
+            margin-top: 18px;
+            background: #fdfaf3;
+            border: 1px solid var(--input-border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .stats-row-inline {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.82rem;
+        }
+
+        .stats-item { display: flex; flex-direction: column; }
+        .stats-label { color: var(--text-muted); margin-bottom: 2px; }
+        .stats-val { font-weight: 700; color: var(--text-dark); }
+
+        .btn-download {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: #ffffff;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.88rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+        }
+
+        /* Footer Copyright Block */
+        .copyright-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 18px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            line-height: 1.6;
+            box-shadow: 0 10px 25px rgba(122, 84, 19, 0.08);
+        }
+
+        .copyright-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 800;
+            color: var(--text-gold);
+            font-size: 0.85rem;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .brand-panel { width: 100%; padding: 30px 20px; border-right: none; border-bottom: 1px solid rgba(201, 152, 70, 0.2); }
+            .controls-panel { width: 100%; padding: 24px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .group-full { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Main Tool Container -->
+    <div class="container">
+        <!-- Left Panel Branding -->
+        <div class="brand-panel">
+            <div class="logo-frame">
+                <div class="logo-inner">
+                    <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="goldGradText" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#7a5413" />
+                                <stop offset="40%" stop-color="#c99846" />
+                                <stop offset="70%" stop-color="#e2b86b" />
+                                <stop offset="100%" stop-color="#523608" />
+                            </linearGradient>
+                            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ffd885" />
+                                <stop offset="50%" stop-color="#c99846" />
+                                <stop offset="100%" stop-color="#6e4911" />
+                            </linearGradient>
+                            <path id="topCurvePath" d="M 16,50 A 34,34 0 1,1 84,50" />
+                            <path id="bottomCurvePath" d="M 84,50 A 34,34 0 0,1 16,50" />
+                        </defs>
+                        <circle cx="50" cy="50" r="44" stroke="url(#ringGrad)" stroke-width="1.5" fill="none" opacity="0.8" />
+                        <circle cx="50" cy="50" r="22" stroke="url(#ringGrad)" stroke-width="0.8" fill="none" opacity="0.5" stroke-dasharray="2 2" />
+                        <text class="curved-text">
+                            <textPath href="#topCurvePath" startOffset="50%" text-anchor="middle">PDF COMPRESSION</textPath>
+                        </text>
+                        <text class="curved-text">
+                            <textPath href="#bottomCurvePath" startOffset="50%" text-anchor="middle">E N G I N E</textPath>
+                        </text>
+                        <text x="50%" y="58%" text-anchor="middle" class="running-text">Ajs</text>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="brand-title">AJS PDF COMPRESSION ENGINE</h1>
+            
+            <div class="feature-highlights">
+                <div class="highlight-item">👑 Unlimited Free Access — Zero Cost Ever</div>
+            </div>
+
+            <div class="security-badge">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                </svg>
+                100% PRIVATE — LOCAL BROWSER PROCESSING
+            </div>
+        </div>
+
+        <!-- Right Panel Conversion Controls -->
+        <div class="controls-panel">
+            <div class="tagline-banner">
+                🎯 Shrink any PDF instantly with total precision — tailored by you, optimized in seconds.
+            </div>
+
+            <!-- Verification / CAPTCHA Gate -->
+            <div class="captcha-box">
+                <div class="captcha-left">
+                    <input type="checkbox" id="captchaCheck" class="captcha-checkbox" onchange="toggleFormAccess(this.checked)">
+                    <span class="captcha-text">Verify you are human to proceed</span>
+                </div>
+                <div class="captcha-badge">
+                    🛡️ Security Gate
+                </div>
+            </div>
+
+            <!-- Form Body (Locked until CAPTCHA checked) -->
+            <div id="formContainer" class="form-disabled">
+                <div class="form-grid">
+                    <div class="group group-full">
+                        <label>Select Document</label>
+                        <div class="file-dropzone">
+                            <input type="file" id="fileInput" accept="application/pdf" onchange="handleFileSelect(this)">
+                            <div class="file-dropzone-text" id="dropzoneText">
+                                <strong>Choose a file</strong> or drag & drop PDF here
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <label for="docType">Document Profile</label>
+                        <select id="docType">
+                            <option value="text">Digital Text Book</option>
+                            <option value="scanned">Scanned Book / Camera Photos</option>
+                        </select>
+                    </div>
+
+                    <div class="group">
+                        <div class="range-header">
+                            <label style="margin: 0;">Target Reduction</label>
+                            <span id="pctValue" class="pct-badge">~50%</span>
+                        </div>
+                        <input type="range" id="reductionPct" min="20" max="80" value="50" step="5" oninput="updatePct(this.value)">
+                    </div>
+                </div>
+
+                <button id="compressBtn" class="btn-submit" onclick="compressPDF()" disabled>Compress PDF</button>
+
+                <div id="status" class="status-box"></div>
+
+                <div id="result" class="result-card">
+                    <div class="stats-row-inline">
+                        <div class="stats-item">
+                            <span class="stats-label">Original</span>
+                            <span id="origSize" class="stats-val">-</span>
+                        </div>
+                        <div class="stats-item">
+                            <span class="stats-label">Compressed</span>
+                            <span id="compSize" class="stats-val">-</span>
+                        </div>
+                        <div class="stats-item">
+                            <span class="stats-label">Savings</span>
+                            <span id="savings" class="stats-val" style="color: var(--success-color);">-</span>
+                        </div>
+                    </div>
+                    <a id="downloadLink" class="btn-download" href="#" download="AJS_compressed.pdf">Download Compressed PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright & Legal Details Card -->
+    <footer class="copyright-card">
+        <div class="copyright-title">© AJS PDF COMPRESSION ENGINE. ALL RIGHTS RESERVED.</div>
+        <div>
+            Designed & Developed for client-side document optimization. All file operations take place locally on your personal device. 
+            No documents are stored, uploaded, or transmitted to any external servers.
+        </div>
+    </footer>
+</div>
+
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    function toggleFormAccess(isChecked) {
+        const formContainer = document.getElementById('formContainer');
+        const compressBtn = document.getElementById('compressBtn');
+
+        if (isChecked) {
+            formContainer.classList.remove('form-disabled');
+            compressBtn.disabled = false;
+        } else {
+            formContainer.classList.add('form-disabled');
+            compressBtn.disabled = true;
+        }
+    }
+
+    function updatePct(val) {
+        document.getElementById('pctValue').innerText = `~${val}%`;
+    }
+
+    function handleFileSelect(input) {
+        const dropzoneText = document.getElementById('dropzoneText');
+        if (input.files && input.files[0]) {
+            dropzoneText.innerHTML = `Selected: <strong>${input.files[0].name}</strong>`;
+        } else {
+            dropzoneText.innerHTML = `<strong>Choose a file</strong> or drag & drop PDF here`;
+        }
+    }
+
+    async function compressPDF() {
+        const isVerified = document.getElementById('captchaCheck').checked;
+        if (!isVerified) {
+            alert('Please complete the human verification check first!');
+            return;
+        }
+
+        const fileInput = document.getElementById('fileInput');
+        const docType = document.getElementById('docType').value;
+        const targetPct = parseInt(document.getElementById('reductionPct').value);
+        const compressBtn = document.getElementById('compressBtn');
+        const status = document.getElementById('status');
+        const result = document.getElementById('result');
+
+        if (!fileInput.files.length) {
+            alert('Please select a PDF file first!');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const origSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+
+        compressBtn.disabled = true;
+        status.style.display = 'block';
+        result.style.display = 'none';
+
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            let compressedBlob;
+
+            if (docType === 'text') {
+                status.innerText = 'Optimizing document streams...';
+                compressedBlob = await compressDigitalTextPdf(arrayBuffer, targetPct);
+            } else {
+                status.innerText = 'Downsampling page images...';
+                compressedBlob = await compressScannedPdf(arrayBuffer, targetPct, status);
+            }
+
+            const compSizeMB = (compressedBlob.size / (1024 * 1024)).toFixed(2);
+            const savings = (((file.size - compressedBlob.size) / file.size) * 100).toFixed(2);
+
+            document.getElementById('origSize').innerText = `${origSizeMB} MB`;
+            document.getElementById('compSize').innerText = `${compSizeMB} MB`;
+            document.getElementById('savings').innerText = savings > 0 ? `${savings}% smaller` : 'Optimized';
+            
+            const downloadUrl = URL.createObjectURL(compressedBlob);
+            const downloadLink = document.getElementById('downloadLink');
+            downloadLink.href = downloadUrl;
+            
+            const originalName = file.name.replace(/\.[^/.]+$/, "");
+            downloadLink.download = `AJS_${originalName}.pdf`;
+            
+            result.style.display = 'block';
+        } catch (e) {
+            console.error(e);
+            alert('Compression error: File may be encrypted or corrupted.');
+        } finally {
+            compressBtn.disabled = false;
+            status.style.display = 'none';
+        }
+    }
+
+    async function compressDigitalTextPdf(arrayBuffer, targetPct) {
+        const { PDFDocument } = PDFLib;
+        const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+        const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
+        return new Blob([pdfBytes], { type: 'application/pdf' });
+    }
+
+    async function compressScannedPdf(arrayBuffer, targetPct, statusElement) {
+        const { PDFDocument } = PDFLib;
+        const srcPdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const outPdf = await PDFDocument.create();
+
+        const maxDimension = Math.round(1400 - ((targetPct / 100) * 600));
+        const jpegQuality = Math.max(0.2, 0.75 - ((targetPct / 100) * 0.5));
+
+        for (let i = 1; i <= srcPdf.numPages; i++) {
+            statusElement.innerText = `Processing Page ${i} of ${srcPdf.numPages}...`;
+
+            if (i % 5 === 0) await new Promise(r => setTimeout(r, 20));
+
+            const page = await srcPdf.getPage(i);
+            const baseViewport = page.getViewport({ scale: 1.0 });
+            const currentMax = Math.max(baseViewport.width, baseViewport.height);
+            
+            const scale = currentMax > maxDimension ? (maxDimension / currentMax) : 0.9;
+            const viewport = page.getViewport({ scale: scale });
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+            const imgDataUrl = canvas.toDataURL('image/jpeg', jpegQuality);
+            const embeddedImg = await outPdf.embedJpg(imgDataUrl);
+
+            const newPage = outPdf.addPage([viewport.width, viewport.height]);
+            newPage.drawImage(embeddedImg, {
+                x: 0,
+                y: 0,
+                width: viewport.width,
+                height: viewport.height,
+            });
+
+            canvas.width = 0;
+            canvas.height = 0;
+        }
+
+        const outBytes = await outPdf.save();
+        return new Blob([outBytes], { type: 'application/pdf' });
+    }
+</script>
+
+</body>
+</html>
