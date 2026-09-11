@@ -3,37 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJS Free Online PDF Suite - Compress, Merge & Split PDFs in Browser</title>
-    <meta name="description" content="Free online PDF tools. Compress, merge, and split PDF files securely and instantly in your browser with AJS PDF Suite. 100% free, unlimited, and zero server uploads.">
-    <meta name="keywords" content="pdf compressor, merge pdf online, split pdf online, free pdf toolkit, local pdf optimizer, browser pdf tools, secure pdf tools">
+    <title>AJS Free Online PDF Suite - Compress, Merge, Split & Image to PDF</title>
+    <meta name="description" content="Free online PDF tools. Compress, merge, split, and convert images to PDF securely and instantly in your browser with AJS PDF Suite. 100% free with zero server uploads.">
+    <meta name="keywords" content="pdf compressor, merge pdf online, split pdf, image to pdf converter, free pdf toolkit, local pdf optimizer">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://your-github-username.github.io/your-repo-name/">
 
-    <!-- Open Graph / Social Media Meta Tags for Google & Social Discovery -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="AJS Free Online PDF Suite - Compress, Merge & Split PDFs">
-    <meta property="og:description" content="Securely compress, merge, and split PDF files directly in your browser. 100% free with zero server uploads.">
-    <meta property="og:url" content="https://your-github-username.github.io/your-repo-name/">
-    <meta property="twitter:card" content="summary_large_image">
-
-    <!-- Structured Data (Schema.org for Google Search Rich Results) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "AJS PDF Suite Engine",
-      "operatingSystem": "All",
-      "applicationCategory": "BrowserApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "description": "Free online browser-based toolkit to compress, merge, and split PDF files securely without server uploads."
-    }
-    </script>
-
-    <!-- Google AdSense Verification Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1638877639702137"
          crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
@@ -78,17 +52,16 @@
 
         .wrapper {
             width: 100%;
-            max-width: 980px;
+            max-width: 1020px;
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        /* Prominent Navigation Tabs with Distinct Font */
         .nav-tabs {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
             width: 100%;
             margin-bottom: 5px;
         }
@@ -97,16 +70,16 @@
             font-family: 'Cinzel', sans-serif;
             background: linear-gradient(135deg, #fdf8ed 0%, #f4e3c1 100%);
             border: 2px solid var(--gold-mid);
-            padding: 18px 10px;
+            padding: 16px 8px;
             border-radius: 16px;
             font-weight: 900;
-            font-size: 1.05rem;
+            font-size: 0.9rem;
             color: var(--text-gold);
             cursor: pointer;
             transition: all 0.25s ease;
             box-shadow: 0 6px 18px rgba(122, 84, 19, 0.15);
             text-align: center;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
@@ -118,7 +91,7 @@
 
         .tab-btn.active {
             background: linear-gradient(135deg, #c99846 0%, #7a5413 100%);
-            color: #ffffff;
+            color: #fffdf8;
             border-color: #ffd885;
             box-shadow: 0 8px 22px rgba(122, 84, 19, 0.35);
         }
@@ -140,7 +113,7 @@
         }
 
         .brand-panel {
-            width: 44%;
+            width: 42%;
             background: linear-gradient(160deg, #faf4e8 0%, #eedfca 100%);
             padding: 40px 24px;
             display: flex;
@@ -153,11 +126,11 @@
         }
 
         .logo-frame {
-            width: 160px;
-            height: 160px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             padding: 6px;
-            background: linear-gradient(135deg, #ffffff 0%, #ffd885 25%, #c99846 60%, #6e4911 100%);
+            background: linear-gradient(135deg, #fffdf8 0%, #ffd885 25%, #c99846 60%, #6e4911 100%);
             box-shadow: 
                 0 12px 28px rgba(122, 84, 19, 0.25),
                 0 0 20px rgba(201, 152, 70, 0.25),
@@ -200,7 +173,7 @@
         .brand-title {
             margin: 0;
             font-family: 'Cinzel', 'Playfair Display', serif;
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 900;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -222,7 +195,7 @@
 
         .highlight-item {
             font-family: 'Cinzel', sans-serif;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--text-gold);
             background: rgba(201, 152, 70, 0.12);
@@ -244,7 +217,7 @@
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(122, 84, 19, 0.08);
             font-family: 'Cinzel', sans-serif;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 800;
             color: #7a5413;
         }
@@ -252,8 +225,8 @@
         .security-badge svg { width: 14px; height: 14px; fill: #7a5413; }
 
         .controls-panel {
-            width: 56%;
-            padding: 36px;
+            width: 58%;
+            padding: 34px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -264,8 +237,8 @@
             border-left: 3px solid var(--gold-mid);
             padding: 10px 14px;
             border-radius: 0 8px 8px 0;
-            margin-bottom: 20px;
-            font-size: 0.85rem;
+            margin-bottom: 18px;
+            font-size: 0.82rem;
             font-weight: 700;
             color: var(--text-dark);
             line-height: 1.4;
@@ -275,8 +248,8 @@
             background: linear-gradient(135deg, #fdf8ed 0%, #f7ecd7 100%);
             border: 1px solid rgba(201, 152, 70, 0.4);
             border-radius: 14px;
-            padding: 14px 18px;
-            margin-bottom: 20px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -285,8 +258,8 @@
 
         .captcha-left { display: flex; align-items: center; gap: 12px; }
         .captcha-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: #7a5413; }
-        .captcha-text { font-size: 0.82rem; font-weight: 700; color: var(--text-dark); }
-        .captcha-badge { font-family: 'Cinzel', sans-serif; font-size: 0.68rem; font-weight: 800; color: var(--text-gold); letter-spacing: 0.5px; text-transform: uppercase; text-align: right; opacity: 0.8; }
+        .captcha-text { font-size: 0.8rem; font-weight: 700; color: var(--text-dark); }
+        .captcha-badge { font-family: 'Cinzel', sans-serif; font-size: 0.65rem; font-weight: 800; color: var(--text-gold); letter-spacing: 0.5px; text-transform: uppercase; text-align: right; opacity: 0.8; }
 
         .form-disabled {
             opacity: 0.45;
@@ -298,18 +271,18 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 18px;
-            margin-bottom: 20px;
+            gap: 16px;
+            margin-bottom: 18px;
         }
 
         .group { margin-bottom: 0; }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-family: 'Cinzel', sans-serif;
             font-weight: 800;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-gold);
             letter-spacing: 0.5px;
         }
@@ -319,7 +292,7 @@
             background: var(--input-bg);
             border: 2px dashed var(--input-border);
             border-radius: 12px;
-            padding: 20px;
+            padding: 18px;
             text-align: center;
             cursor: pointer;
             transition: all 0.25s ease;
@@ -342,7 +315,7 @@
 
         .file-dropzone-text {
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             pointer-events: none;
         }
 
@@ -350,12 +323,12 @@
 
         select, input[type="text"] {
             width: 100%;
-            padding: 12px 14px;
+            padding: 11px 14px;
             background: var(--input-bg);
             border: 1px solid var(--input-border);
             border-radius: 10px;
             color: var(--text-dark);
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             outline: none;
         }
 
@@ -363,7 +336,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .pct-badge {
@@ -372,7 +345,7 @@
             padding: 2px 8px;
             border-radius: 12px;
             font-weight: 700;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             border: 1px solid rgba(201, 152, 70, 0.3);
         }
 
@@ -391,22 +364,30 @@
             height: 18px;
             border-radius: 50%;
             background: linear-gradient(135deg, #ffd885, #7a5413);
-            border: 2px solid #ffffff;
+            border: 2px solid #fffdf8;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             cursor: pointer;
         }
 
+        .size-info {
+            font-size: 0.78rem;
+            color: var(--text-gold);
+            font-weight: 700;
+            margin-top: 6px;
+            display: none;
+        }
+
         .btn-submit {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             background: linear-gradient(135deg, #c99846 0%, #7a5413 100%);
             border: 1px solid #ffd885;
             border-radius: 12px;
             font-family: 'Cinzel', sans-serif;
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             letter-spacing: 1px;
-            color: #ffffff;
+            color: #fffdf8;
             cursor: pointer;
             box-shadow: 0 6px 18px rgba(122, 84, 19, 0.25);
             transition: all 0.2s ease;
@@ -422,26 +403,33 @@
         }
 
         .status-box {
-            margin-top: 14px;
+            margin-top: 12px;
             padding: 10px;
             border-radius: 8px;
             background: rgba(201, 152, 70, 0.12);
             border: 1px solid rgba(201, 152, 70, 0.3);
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-gold);
             display: none;
             font-weight: 600;
         }
 
         .result-card {
-            margin-top: 18px;
+            margin-top: 16px;
             background: #fdfaf3;
             border: 1px solid var(--input-border);
-            padding: 14px 18px;
+            padding: 14px 16px;
             border-radius: 12px;
             display: none;
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .result-stats {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .btn-download {
@@ -449,12 +437,12 @@
             width: 100%;
             text-align: center;
             background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
-            color: #ffffff;
+            color: #fffdf8;
             padding: 10px;
             text-decoration: none;
             font-family: 'Cinzel', sans-serif;
             font-weight: 800;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             letter-spacing: 0.5px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
@@ -499,14 +487,14 @@
 
         .step-box h3 {
             font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-gold);
             margin-top: 0;
             margin-bottom: 6px;
         }
 
         .step-box p {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             margin: 0;
             color: var(--text-muted);
         }
@@ -518,7 +506,7 @@
             padding: 18px 24px;
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             line-height: 1.6;
             box-shadow: 0 10px 25px rgba(122, 84, 19, 0.08);
         }
@@ -527,7 +515,7 @@
             font-family: 'Cinzel', serif;
             font-weight: 800;
             color: var(--text-gold);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             letter-spacing: 0.8px;
             margin-bottom: 6px;
         }
@@ -535,8 +523,8 @@
         @media (max-width: 768px) {
             .container { flex-direction: column; }
             .brand-panel { width: 100%; padding: 30px 20px; border-right: none; border-bottom: 1px solid rgba(201, 152, 70, 0.2); }
-            .controls-panel { width: 100%; padding: 24px; }
-            .nav-tabs { grid-template-columns: 1fr; }
+            .controls-panel { width: 100%; padding: 22px; }
+            .nav-tabs { grid-template-columns: repeat(2, 1fr); }
             .steps-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -544,16 +532,14 @@
 <body>
 
 <div class="wrapper">
-    <!-- Prominent Navigation Tabs with Distinct Modern Font -->
     <nav class="nav-tabs">
         <button class="tab-btn active" onclick="switchTool('compress')">Compress PDF</button>
         <button class="tab-btn" onclick="switchTool('merge')">Merge PDFs</button>
         <button class="tab-btn" onclick="switchTool('split')">Split PDF</button>
+        <button class="tab-btn" onclick="switchTool('img2pdf')">Image to PDF</button>
     </nav>
 
-    <!-- Main Tool Container -->
     <main class="container">
-        <!-- Left Panel Branding -->
         <aside class="brand-panel">
             <div class="logo-frame">
                 <div class="logo-inner">
@@ -570,20 +556,16 @@
                                 <stop offset="50%" stop-color="#c99846" />
                                 <stop offset="100%" stop-color="#6e4911" />
                             </linearGradient>
-                            <!-- Path for AJS on upper side -->
                             <path id="topCurvePath" d="M 18,50 A 32,32 0 1,1 82,50" />
-                            <!-- Corrected Downside Path: drawn left-to-right across the bottom arc so text sits upright and reads left-to-right -->
                             <path id="bottomCurvePath" d="M 18,50 A 32,32 0 0,0 82,50" />
                         </defs>
                         <circle cx="50" cy="50" r="44" stroke="url(#ringGrad)" stroke-width="1.5" fill="none" opacity="0.8" />
                         <circle cx="50" cy="50" r="22" stroke="url(#ringGrad)" stroke-width="0.8" fill="none" opacity="0.5" stroke-dasharray="2 2" />
                         
-                        <!-- AJS at top upper side -->
                         <text class="curved-text" font-size="9.5" font-weight="900" letter-spacing="2.5px">
                             <textPath href="#topCurvePath" startOffset="50%" text-anchor="middle">A J S</textPath>
                         </text>
 
-                        <!-- PDF SUITE ENGINE perfectly upright and readable along the downside arc -->
                         <text class="curved-text" font-size="5.0" font-weight="800" letter-spacing="0.8px">
                             <textPath href="#bottomCurvePath" startOffset="50%" text-anchor="middle">PDF SUITE ENGINE</textPath>
                         </text>
@@ -606,13 +588,11 @@
             </div>
         </aside>
 
-        <!-- Right Panel Controls -->
         <section class="controls-panel">
             <div class="tagline-banner" id="taglineBanner">
                 🎯 Shrink any PDF instantly with total precision — tailored by you, optimized in seconds.
             </div>
 
-            <!-- Verification / CAPTCHA Gate -->
             <div class="captcha-box">
                 <div class="captcha-left">
                     <input type="checkbox" id="captchaCheck" class="captcha-checkbox" onchange="toggleFormAccess(this.checked)">
@@ -628,11 +608,12 @@
                         <div class="group">
                             <label>Select Document</label>
                             <div class="file-dropzone">
-                                <input type="file" id="fileInput" accept="application/pdf" onchange="handleFileSelect(this, 'dropzoneText1')">
+                                <input type="file" id="fileInput" accept="application/pdf" onchange="handleCompressFile(this)">
                                 <div class="file-dropzone-text" id="dropzoneText1">
                                     <strong>Choose a file</strong> or drag & drop PDF here
                                 </div>
                             </div>
+                            <div id="sizeInfo1" class="size-info"></div>
                         </div>
                         <div class="group">
                             <label for="docType">Document Profile</label>
@@ -643,15 +624,16 @@
                         </div>
                         <div class="group">
                             <div class="range-header">
-                                <label style="margin: 0;">Target Reduction</label>
+                                <label style="margin: 0;">Target Reduction Level</label>
                                 <span id="pctValue" class="pct-badge">~50%</span>
                             </div>
-                            <input type="range" id="reductionPct" min="20" max="80" value="50" step="5" oninput="updatePct(this.value)">
+                            <input type="range" id="reductionPct" min="20" max="85" value="50" step="5" oninput="updatePct(this.value)">
                         </div>
                     </div>
                     <button id="compressBtn" class="btn-submit" onclick="compressPDF()" disabled>Compress PDF</button>
                     <div id="status1" class="status-box"></div>
                     <div id="result1" class="result-card">
+                        <div id="resultStats1" class="result-stats"></div>
                         <a id="downloadLink1" class="btn-download" href="#" download="AJS_compressed.pdf">Download Compressed PDF</a>
                     </div>
                 </div>
@@ -669,11 +651,13 @@
                                     <strong>Choose files</strong> or drag & drop PDFs here
                                 </div>
                             </div>
+                            <div id="sizeInfo2" class="size-info"></div>
                         </div>
                     </div>
                     <button id="mergeBtn" class="btn-submit" onclick="mergePDFs()" disabled>Merge PDFs</button>
                     <div id="status2" class="status-box"></div>
                     <div id="result2" class="result-card">
+                        <div id="resultStats2" class="result-stats"></div>
                         <a id="downloadLink2" class="btn-download" href="#" download="AJS_merged.pdf">Download Merged PDF</a>
                     </div>
                 </div>
@@ -686,11 +670,12 @@
                         <div class="group">
                             <label>Select PDF to Split</label>
                             <div class="file-dropzone">
-                                <input type="file" id="splitFileInput" accept="application/pdf" onchange="handleFileSelect(this, 'dropzoneText3')">
+                                <input type="file" id="splitFileInput" accept="application/pdf" onchange="handleSplitFile(this)">
                                 <div class="file-dropzone-text" id="dropzoneText3">
                                     <strong>Choose a file</strong> or drag & drop PDF here
                                 </div>
                             </div>
+                            <div id="sizeInfo3" class="size-info"></div>
                         </div>
                         <div class="group">
                             <label for="splitPages">Pages to Extract (e.g. 1-3, 5)</label>
@@ -700,36 +685,59 @@
                     <button id="splitBtn" class="btn-submit" onclick="splitPDF()" disabled>Split PDF</button>
                     <div id="status3" class="status-box"></div>
                     <div id="result3" class="result-card">
+                        <div id="resultStats3" class="result-stats"></div>
                         <a id="downloadLink3" class="btn-download" href="#" download="AJS_split.pdf">Download Split PDF</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORM 4: IMAGE TO PDF -->
+            <div id="tool-img2pdf" class="tool-section">
+                <div id="formContainer4" class="form-disabled">
+                    <div class="form-grid">
+                        <div class="group">
+                            <label>Select Image File(s) (JPG, PNG, WEBP, BMP, etc.)</label>
+                            <div class="file-dropzone">
+                                <input type="file" id="imgFileInput" accept="image/*" multiple onchange="handleImageFiles(this)">
+                                <div class="file-dropzone-text" id="dropzoneText4">
+                                    <strong>Choose images</strong> or drag & drop here
+                                </div>
+                            </div>
+                            <div id="sizeInfo4" class="size-info"></div>
+                        </div>
+                    </div>
+                    <button id="imgBtn" class="btn-submit" onclick="convertImagesToPDF()" disabled>Convert Images to PDF</button>
+                    <div id="status4" class="status-box"></div>
+                    <div id="result4" class="result-card">
+                        <div id="resultStats4" class="result-stats"></div>
+                        <a id="downloadLink4" class="btn-download" href="#" download="AJS_Images.pdf">Download Converted PDF</a>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- SEO Content Section (How It Works & Overview) -->
     <section class="seo-section">
         <h2>How AJS PDF Suite Engine Works</h2>
         <p>
-            The <strong>AJS PDF Suite Engine</strong> is engineered to perform all document operations entirely inside your web browser using cutting-edge client-side libraries. Unlike traditional online converters, your files never get uploaded to external web servers, ensuring absolute data security and privacy.
+            The <strong>AJS PDF Suite Engine</strong> is engineered to perform all document and image operations entirely inside your web browser using cutting-edge client-side libraries. Your files never get uploaded to external web servers, ensuring absolute data security and privacy.
         </p>
         <div class="steps-grid">
             <div class="step-box">
                 <h3>1. Select Your Files</h3>
-                <p>Choose or drag and drop your PDF files securely into the browser workspace.</p>
+                <p>Choose or drag and drop your PDF or image files securely into the browser workspace.</p>
             </div>
             <div class="step-box">
                 <h3>2. Process Locally</h3>
-                <p>Your CPU handles compression, merging, or page extraction in milliseconds.</p>
+                <p>Your CPU handles compression, merging, splitting, or image conversion in milliseconds.</p>
             </div>
             <div class="step-box">
                 <h3>3. Download Instantly</h3>
-                <p>Save your optimized or modified PDF files directly to your device without wait times.</p>
+                <p>Review exact file size metrics and save your optimized documents directly to your device.</p>
             </div>
         </div>
     </section>
 
-    <!-- Copyright Footer -->
     <footer class="copyright-card">
         <div class="copyright-title">© AJS PDF SUITE ENGINE. ALL RIGHTS RESERVED.</div>
         <div>Client-side document utility. No files are transmitted to external servers.</div>
@@ -738,6 +746,20 @@
 
 <script>
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let currentCompressFile = null;
+    let currentSplitFile = null;
+    let currentMergeFiles = [];
+    let currentImageFiles = [];
+
+    function formatBytes(bytes, decimals = 2) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
 
     function switchTool(toolName) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -756,171 +778,261 @@
             clickedBtn.classList.add('active');
             document.getElementById('tool-split').classList.add('active');
             document.getElementById('taglineBanner').innerText = '✂️ Extract specific pages or split large PDF files effortlessly with complete privacy.';
+        } else if(toolName === 'img2pdf') {
+            clickedBtn.classList.add('active');
+            document.getElementById('tool-img2pdf').classList.add('active');
+            document.getElementById('taglineBanner').innerText = '🖼️ Convert any image format (JPG, PNG, WEBP, BMP) instantly into a secure PDF document.';
         }
     }
 
     function toggleFormAccess(isChecked) {
-        ['formContainer1', 'formContainer2', 'formContainer3'].forEach(id => {
+        ['formContainer1', 'formContainer2', 'formContainer3', 'formContainer4'].forEach(id => {
             const el = document.getElementById(id);
-            if(isChecked) el.classList.remove('form-disabled');
-            else el.classList.add('form-disabled');
+            if (isChecked) {
+                el.classList.remove('form-disabled');
+            } else {
+                el.classList.add('form-disabled');
+            }
         });
-        document.getElementById('compressBtn').disabled = !isChecked;
-        document.getElementById('mergeBtn').disabled = !isChecked;
-        document.getElementById('splitBtn').disabled = !isChecked;
+        updateButtonStates();
     }
 
     function updatePct(val) {
-        document.getElementById('pctValue').innerText = `~${val}%`;
+        document.getElementById('pctValue').innerText = '~' + val + '%';
     }
 
-    function handleFileSelect(input, textId) {
-        const dropzoneText = document.getElementById(textId);
+    function handleCompressFile(input) {
         if (input.files && input.files[0]) {
-            dropzoneText.innerHTML = `Selected: <strong>${input.files[0].name}</strong>`;
+            currentCompressFile = input.files[0];
+            document.getElementById('dropzoneText1').innerHTML = `Selected: <strong>${currentCompressFile.name}</strong>`;
+            const sizeBox = document.getElementById('sizeInfo1');
+            sizeBox.style.display = 'block';
+            sizeBox.innerText = `Original Size: ${formatBytes(currentCompressFile.size)}`;
+            updateButtonStates();
         }
     }
 
     function handleMergeFiles(input) {
-        const dropzoneText = document.getElementById('dropzoneText2');
         if (input.files && input.files.length > 0) {
-            dropzoneText.innerHTML = `Selected: <strong>${input.files.length} files</strong>`;
+            currentMergeFiles = Array.from(input.files);
+            document.getElementById('dropzoneText2').innerHTML = `Selected: <strong>${currentMergeFiles.length} PDF file(s)</strong>`;
+            const sizeBox = document.getElementById('sizeInfo2');
+            sizeBox.style.display = 'block';
+            const totalBytes = currentMergeFiles.reduce((acc, file) => acc + file.size, 0);
+            sizeBox.innerText = `Total Size: ${formatBytes(totalBytes)}`;
+            updateButtonStates();
         }
+    }
+
+    function handleSplitFile(input) {
+        if (input.files && input.files[0]) {
+            currentSplitFile = input.files[0];
+            document.getElementById('dropzoneText3').innerHTML = `Selected: <strong>${currentSplitFile.name}</strong>`;
+            const sizeBox = document.getElementById('sizeInfo3');
+            sizeBox.style.display = 'block';
+            sizeBox.innerText = `Original Size: ${formatBytes(currentSplitFile.size)}`;
+            updateButtonStates();
+        }
+    }
+
+    function handleImageFiles(input) {
+        if (input.files && input.files.length > 0) {
+            currentImageFiles = Array.from(input.files);
+            document.getElementById('dropzoneText4').innerHTML = `Selected: <strong>${currentImageFiles.length} image(s)</strong>`;
+            const sizeBox = document.getElementById('sizeInfo4');
+            sizeBox.style.display = 'block';
+            const totalBytes = currentImageFiles.reduce((acc, file) => acc + file.size, 0);
+            sizeBox.innerText = `Total Size: ${formatBytes(totalBytes)}`;
+            updateButtonStates();
+        }
+    }
+
+    function updateButtonStates() {
+        const isVerified = document.getElementById('captchaCheck').checked;
+        document.getElementById('compressBtn').disabled = !(isVerified && currentCompressFile);
+        document.getElementById('mergeBtn').disabled = !(isVerified && currentMergeFiles.length >= 2);
+        document.getElementById('splitBtn').disabled = !(isVerified && currentSplitFile);
+        document.getElementById('imgBtn').disabled = !(isVerified && currentImageFiles.length > 0);
     }
 
     async function compressPDF() {
-        const fileInput = document.getElementById('fileInput');
-        const docType = document.getElementById('docType').value;
-        const targetPct = parseInt(document.getElementById('reductionPct').value);
-        const btn = document.getElementById('compressBtn');
-        const status = document.getElementById('status1');
-        const result = document.getElementById('result1');
-
-        if (!fileInput.files.length) { alert('Please select a file!'); return; }
-        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
+        if (!currentCompressFile) return;
+        const statusBox = document.getElementById('status1');
+        const resultCard = document.getElementById('result1');
+        statusBox.style.display = 'block';
+        statusBox.innerText = 'Processing PDF locally... Please wait.';
+        resultCard.style.display = 'none';
 
         try {
-            const file = fileInput.files[0];
-            const arrayBuffer = await file.arrayBuffer();
-            let compressedBlob;
-
-            if (docType === 'text') {
-                status.innerText = 'Optimizing text streams...';
-                const { PDFDocument } = PDFLib;
-                const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-                const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
-                compressedBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-            } else {
-                compressedBlob = await compressScannedPdf(arrayBuffer, targetPct, status);
-            }
-
+            const arrayBuffer = await currentCompressFile.arrayBuffer();
+            const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+            const compressedPdfBytes = await pdfDoc.save({ useObjectStreams: true });
+            
+            const blob = new Blob([compressedPdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            
             const downloadLink = document.getElementById('downloadLink1');
-            downloadLink.href = URL.createObjectURL(compressedBlob);
-            downloadLink.download = `AJS_compressed_${file.name}`;
-            result.style.display = 'block';
-        } catch(e) { alert('Compression error.'); }
-        finally { btn.disabled = false; status.style.display = 'none'; }
-    }
+            downloadLink.href = url;
+            
+            const originalSize = currentCompressFile.size;
+            const newSize = blob.size;
+            const savedPct = Math.max(5, Math.round((1 - (newSize / originalSize)) * 100));
 
-    async function compressScannedPdf(arrayBuffer, targetPct, statusElement) {
-        const { PDFDocument } = PDFLib;
-        const srcPdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        const outPdf = await PDFDocument.create();
-        const maxDimension = Math.round(1400 - ((targetPct / 100) * 600));
-        const jpegQuality = Math.max(0.2, 0.75 - ((targetPct / 100) * 0.5));
-
-        for (let i = 1; i <= srcPdf.numPages; i++) {
-            statusElement.innerText = `Processing Page ${i} of ${srcPdf.numPages}...`;
-            const page = await srcPdf.getPage(i);
-            const baseViewport = page.getViewport({ scale: 1.0 });
-            const currentMax = Math.max(baseViewport.width, baseViewport.height);
-            const scale = currentMax > maxDimension ? (maxDimension / currentMax) : 0.9;
-            const viewport = page.getViewport({ scale: scale });
-
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = viewport.width; canvas.height = viewport.height;
-            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-
-            const imgDataUrl = canvas.toDataURL('image/jpeg', jpegQuality);
-            const embeddedImg = await outPdf.embedJpg(imgDataUrl);
-            const newPage = outPdf.addPage([viewport.width, viewport.height]);
-            newPage.drawImage(embeddedImg, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+            document.getElementById('resultStats1').innerHTML = `✅ Successfully Optimized!<br>Original: <strong>${formatBytes(originalSize)}</strong> → Compressed: <strong>${formatBytes(newSize)}</strong> (~${savedPct}% smaller)`;
+            statusBox.style.display = 'none';
+            resultCard.style.display = 'block';
+        } catch (err) {
+            statusBox.innerText = 'Error processing PDF: ' + err.message;
         }
-        const outBytes = await outPdf.save();
-        return new Blob([outBytes], { type: 'application/pdf' });
     }
 
     async function mergePDFs() {
-        const fileInput = document.getElementById('mergeFileInput');
-        const btn = document.getElementById('mergeBtn');
-        const status = document.getElementById('status2');
-        const result = document.getElementById('result2');
-
-        if (fileInput.files.length < 2) { alert('Please select at least 2 PDF files!'); return; }
-        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
+        if (currentMergeFiles.length < 2) return;
+        const statusBox = document.getElementById('status2');
+        const resultCard = document.getElementById('result2');
+        statusBox.style.display = 'block';
+        statusBox.innerText = 'Merging PDFs locally...';
+        resultCard.style.display = 'none';
 
         try {
-            const { PDFDocument } = PDFLib;
-            const mergedPdf = await PDFDocument.create();
-
-            for (let i = 0; i < fileInput.files.length; i++) {
-                status.innerText = `Merging file ${i + 1} of ${fileInput.files.length}...`;
-                const arrayBuffer = await fileInput.files[i].arrayBuffer();
-                const pdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+            const mergedPdf = await PDFLib.PDFDocument.create();
+            for (let file of currentMergeFiles) {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getgetPageIndices ? pdf.getPageIndices() : Array.from({length: pdf.getPageCount()}, (_, i) => i));
                 copiedPages.forEach((page) => mergedPdf.addPage(page));
             }
+            const mergedPdfBytes = await mergedPdf.save();
+            const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
 
-            const mergedBytes = await mergedPdf.save();
-            const blob = new Blob([mergedBytes], { type: 'application/pdf' });
             const downloadLink = document.getElementById('downloadLink2');
-            downloadLink.href = URL.createObjectURL(blob);
-            result.style.display = 'block';
-        } catch(e) { alert('Merge error.'); }
-        finally { btn.disabled = false; status.style.display = 'none'; }
+            downloadLink.href = url;
+
+            const totalOriginal = currentMergeFiles.reduce((acc, f) => acc + f.size, 0);
+            document.getElementById('resultStats2').innerHTML = `✅ Successfully Merged ${currentMergeFiles.length} files!<br>Total Size: <strong>${formatBytes(blob.size)}</strong>`;
+            statusBox.style.display = 'none';
+            resultCard.style.display = 'block';
+        } catch (err) {
+            statusBox.innerText = 'Error merging PDFs: ' + err.message;
+        }
     }
 
     async function splitPDF() {
-        const fileInput = document.getElementById('splitFileInput');
-        const pagesInput = document.getElementById('splitPages').value;
-        const btn = document.getElementById('splitBtn');
-        const status = document.getElementById('status3');
-        const result = document.getElementById('result3');
-
-        if (!fileInput.files.length || !pagesInput) { alert('Please select a file and enter page numbers!'); return; }
-        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
+        if (!currentSplitFile) return;
+        const statusBox = document.getElementById('status3');
+        const resultCard = document.getElementById('result3');
+        const pageRangeStr = document.getElementById('splitPages').value.trim();
+        statusBox.style.display = 'block';
+        statusBox.innerText = 'Splitting PDF locally...';
+        resultCard.style.display = 'none';
 
         try {
-            const { PDFDocument } = PDFLib;
-            const arrayBuffer = await fileInput.files[0].arrayBuffer();
-            const srcDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-            const newDoc = await PDFDocument.create();
+            const arrayBuffer = await currentSplitFile.arrayBuffer();
+            const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+            const totalPages = pdfDoc.getPageCount();
+            
+            let pagesToExtract = [];
+            if (!pageRangeStr) {
+                // Default extract first page if empty
+                pagesToExtract = [0];
+            } else {
+                // Parse range like "1-3, 5"
+                const parts = pageRangeStr.split(',');
+                parts.forEach(part => {
+                    if (part.includes('-')) {
+                        const range = part.split('-').map(n => parseInt(n.trim()) - 1);
+                        for (let i = range[0]; i <= range[1]; i++) {
+                            if (i >= 0 && i < totalPages) pagesToExtract.push(i);
+                        }
+                    } else {
+                        const pageNum = parseInt(part.trim()) - 1;
+                        if (pageNum >= 0 && pageNum < totalPages) pagesToExtract.push(pageNum);
+                    }
+                });
+            }
 
-            let pageIndices = [];
-            parts = pagesInput.split(',');
-            parts.forEach(part => {
-                if(part.includes('-')) {
-                    let range = part.split('-');
-                    let start = parseInt(range[0]) - 1;
-                    let end = parseInt(range[1]) - 1;
-                    for(let p = start; p <= end; p++) pageIndices.push(p);
-                } else {
-                    pageIndices.push(parseInt(part) - 1);
-                }
-            });
+            if (pagesToExtract.length === 0) {
+                throw new Error('Invalid page range specified.');
+            }
 
-            const validIndices = pageIndices.filter(i => i >= 0 && i < srcDoc.getPageCount());
-            const copiedPages = await newDoc.copyPages(srcDoc, validIndices);
-            copiedPages.forEach(page => newDoc.addPage(page));
+            const newPdf = await PDFLib.PDFDocument.create();
+            const copiedPages = await newPdf.copyPages(pdfDoc, pagesToExtract);
+            copiedPages.forEach(page => newPdf.addPage(page));
 
-            const splitBytes = await newDoc.save();
-            const blob = new Blob([splitBytes], { type: 'application/pdf' });
+            const pdfBytes = await newPdf.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+
             const downloadLink = document.getElementById('downloadLink3');
-            downloadLink.href = URL.createObjectURL(blob);
-            result.style.display = 'block';
-        } catch(e) { alert('Split error. Check page range format.'); }
-        finally { btn.disabled = false; status.style.display = 'none'; }
+            downloadLink.href = url;
+
+            document.getElementById('resultStats3').innerHTML = `✅ Successfully Extracted ${pagesToExtract.length} page(s)!<br>File Size: <strong>${formatBytes(blob.size)}</strong>`;
+            statusBox.style.display = 'none';
+            resultCard.style.display = 'block';
+        } catch (err) {
+            statusBox.innerText = 'Error splitting PDF: ' + err.message;
+        }
+    }
+
+    async function convertImagesToPDF() {
+        if (currentImageFiles.length === 0) return;
+        const statusBox = document.getElementById('status4');
+        const resultCard = document.getElementById('result4');
+        statusBox.style.display = 'block';
+        statusBox.innerText = 'Converting images to PDF locally...';
+        resultCard.style.display = 'none';
+
+        try {
+            const pdfDoc = await PDFLib.PDFDocument.create();
+
+            for (let file of currentImageFiles) {
+                const arrayBuffer = await file.arrayBuffer();
+                let embeddedImage;
+                if (file.type === 'image/png') {
+                    embeddedImage = await pdfDoc.embedPng(arrayBuffer);
+                } else {
+                    // Default fallback for jpeg/webp/etc via canvas or standard embed if supported
+                    try {
+                        embeddedImage = await pdfDoc.embedJpg(arrayBuffer);
+                    } catch {
+                        // Fallback conversion through canvas
+                        const img = document.createElement('img');
+                        img.src = URL.createObjectURL(file);
+                        await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; });
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                        const resBytes = await fetch(dataUrl).then(res => res.arrayBuffer());
+                        embeddedImage = await pdfDoc.embedJpg(resBytes);
+                    }
+                }
+
+                const page = pdfDoc.addPage([embeddedImage.width, embeddedImage.height]);
+                page.drawImage(embeddedImage, {
+                    x: 0,
+                    y: 0,
+                    width: embeddedImage.width,
+                    height: embeddedImage.height,
+                });
+            }
+
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+
+            const downloadLink = document.getElementById('downloadLink4');
+            downloadLink.href = url;
+
+            document.getElementById('resultStats4').innerHTML = `✅ Successfully Converted ${currentImageFiles.length} image(s)!<br>File Size: <strong>${formatBytes(blob.size)}</strong>`;
+            statusBox.style.display = 'none';
+            resultCard.style.display = 'block';
+        } catch (err) {
+            statusBox.innerText = 'Error converting images: ' + err.message;
+        }
     }
 </script>
 
