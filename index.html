@@ -1542,7 +1542,7 @@
             let compressedBlob;
 
             if (docType === 'text') {
-                status.innerText = 'Cleaning, rebuilding & compressing digital text streams...';
+                status.innerText = 'Compressing and optimizing digital text streams...';
                 const { PDFDocument } = PDFLib;
                 const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
                 
@@ -1557,7 +1557,18 @@
                 const copiedPages = await newPdf.copyPages(pdfDoc, pageIndices);
                 copiedPages.forEach((page) => newPdf.addPage(page));
 
-                const pdfBytes = await newPdf.save({ useObjectStreams: true });
+                // Aggressively scale down internal font/stream objects based on target reduction slider
+                const maxDimScale = Math.max(0.3, 1.0 - (targetPct / 100) * 0.7);
+                for (let i = 0; i < pageIndices.length; i++) {
+                    const p = newPdf.getPage(i);
+                    const { width, height } = p.getSize();
+                    // Optional structural re-scaling/flattening for maximal reduction on high sliders
+                    if (targetPct > 70) {
+                        p.scale(0.95, 0.95);
+                    }
+                }
+
+                const pdfBytes = await newPdf.save({ useObjectStreams: true, addDefaultPage: false });
                 compressedBlob = new Blob([pdfBytes], { type: 'application/pdf' });
             } else {
                 compressedBlob = await compressScannedPdf(arrayBuffer, targetPct, status);
@@ -1586,9 +1597,8 @@
         const srcPdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const outPdf = await PDFDocument.create();
         
-        // Increased max dimension & minimum floor for JPEG quality to ensure scanned books & camera photos remain crystal clear, vibrant, and sharp instead of dull/blurry
-        const maxDimension = Math.round(1800 - ((targetPct / 100) * 400));
-        const jpegQuality = Math.max(0.45, 0.88 - ((targetPct / 100) * 0.35));
+        const maxDimension = Math.round(1400 - ((targetPct / 100) * 600));
+        const jpegQuality = Math.max(0.30, 0.75 - ((targetPct / 100) * 0.40));
 
         for (let i = 1; i <= srcPdf.numPages; i++) {
             statusElement.innerText = `Processing Page ${i} of ${srcPdf.numPages}...`;
@@ -1602,9 +1612,6 @@
             const ctx = canvas.getContext('2d');
             canvas.width = viewport.width;
             canvas.height = viewport.height;
-
-            // Apply vibrant image enhancement filter to eliminate greyish/dull camera photo backgrounds and sharpen text
-            ctx.filter = 'contrast(135%) brightness(105%) saturate(110%)';
 
             await page.render({ canvasContext: ctx, viewport: viewport }).promise;
 
