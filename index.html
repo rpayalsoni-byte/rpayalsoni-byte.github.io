@@ -628,6 +628,7 @@
             justify-content: center;
             align-items: center;
             padding: 15px;
+            touch-action: none;
         }
 
         .crop-modal {
@@ -663,7 +664,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            touch-action: none; /* Prevents mobile scrolling/panning gestures */
+            touch-action: none;
         }
 
         #cropSourceCanvas {
@@ -671,6 +672,7 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            touch-action: none;
         }
 
         .crop-box-overlay {
@@ -679,27 +681,27 @@
             background: rgba(201, 152, 70, 0.2);
             cursor: move;
             box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
-            touch-action: none; /* Prevents mobile scrolling */
+            touch-action: none;
         }
 
         .crop-handle {
             position: absolute;
-            width: 16px; /* Slightly larger for easier touch interaction on mobile */
-            height: 16px;
+            width: 18px;
+            height: 18px;
             background: #f7da94;
             border: 2px solid #7a5413;
             border-radius: 3px;
             touch-action: none;
         }
 
-        .handle-tl { top: -8px; left: -8px; cursor: nwse-resize; }
-        .handle-tr { top: -8px; right: -8px; cursor: nesw-resize; }
-        .handle-bl { bottom: -8px; left: -8px; cursor: nesw-resize; }
-        .handle-br { bottom: -8px; right: -8px; cursor: nwse-resize; }
-        .handle-tc { top: -8px; left: calc(50% - 8px); cursor: ns-resize; }
-        .handle-bc { bottom: -8px; left: calc(50% - 8px); cursor: ns-resize; }
-        .handle-ml { top: calc(50% - 8px); left: -8px; cursor: ew-resize; }
-        .handle-mr { top: calc(50% - 8px); right: -8px; cursor: ew-resize; }
+        .handle-tl { top: -9px; left: -9px; cursor: nwse-resize; }
+        .handle-tr { top: -9px; right: -9px; cursor: nesw-resize; }
+        .handle-bl { bottom: -9px; left: -9px; cursor: nesw-resize; }
+        .handle-br { bottom: -9px; right: -9px; cursor: nwse-resize; }
+        .handle-tc { top: -9px; left: calc(50% - 9px); cursor: ns-resize; }
+        .handle-bc { bottom: -9px; left: calc(50% - 9px); cursor: ns-resize; }
+        .handle-ml { top: calc(50% - 9px); left: -9px; cursor: ew-resize; }
+        .handle-mr { top: calc(50% - 9px); right: -9px; cursor: ew-resize; }
 
         .crop-buttons {
             display: flex;
@@ -1400,7 +1402,6 @@
 
     const boxOverlay = document.getElementById('cropBoxOverlay');
     
-    // UPDATED: Use Pointer Events for seamless cross-platform touch and mouse support without screen panning
     boxOverlay.addEventListener('pointerdown', (e) => {
         if (e.target.classList.contains('crop-handle')) {
             activeHandle = e.target.getAttribute('data-handle');
