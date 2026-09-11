@@ -7,8 +7,8 @@
     <meta name="description" content="Free online PDF tools. Compress, merge, split, and convert images to PDF securely and instantly in your browser with AJS PDF Suite. 100% free with zero server uploads.">
     <meta name="robots" content="index, follow">
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1981500655845713"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1638877639702137"
+         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -628,7 +628,6 @@
             justify-content: center;
             align-items: center;
             padding: 15px;
-            touch-action: none;
         }
 
         .crop-modal {
@@ -664,7 +663,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            touch-action: none;
+            touch-action: none; /* Prevents mobile scrolling/panning gestures */
         }
 
         #cropSourceCanvas {
@@ -680,26 +679,27 @@
             background: rgba(201, 152, 70, 0.2);
             cursor: move;
             box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
-            touch-action: none;
+            touch-action: none; /* Prevents mobile scrolling */
         }
 
         .crop-handle {
             position: absolute;
-            width: 18px;
-            height: 18px;
+            width: 16px; /* Slightly larger for easier touch interaction on mobile */
+            height: 16px;
             background: #f7da94;
             border: 2px solid #7a5413;
-            border-radius: 4px;
+            border-radius: 3px;
+            touch-action: none;
         }
 
-        .handle-tl { top: -9px; left: -9px; cursor: nwse-resize; }
-        .handle-tr { top: -9px; right: -9px; cursor: nesw-resize; }
-        .handle-bl { bottom: -9px; left: -9px; cursor: nesw-resize; }
-        .handle-br { bottom: -9px; right: -9px; cursor: nwse-resize; }
-        .handle-tc { top: -9px; left: calc(50% - 9px); cursor: ns-resize; }
-        .handle-bc { bottom: -9px; left: calc(50% - 9px); cursor: ns-resize; }
-        .handle-ml { top: calc(50% - 9px); left: -9px; cursor: ew-resize; }
-        .handle-mr { top: calc(50% - 9px); right: -9px; cursor: ew-resize; }
+        .handle-tl { top: -8px; left: -8px; cursor: nwse-resize; }
+        .handle-tr { top: -8px; right: -8px; cursor: nesw-resize; }
+        .handle-bl { bottom: -8px; left: -8px; cursor: nesw-resize; }
+        .handle-br { bottom: -8px; right: -8px; cursor: nwse-resize; }
+        .handle-tc { top: -8px; left: calc(50% - 8px); cursor: ns-resize; }
+        .handle-bc { bottom: -8px; left: calc(50% - 8px); cursor: ns-resize; }
+        .handle-ml { top: calc(50% - 8px); left: -8px; cursor: ew-resize; }
+        .handle-mr { top: calc(50% - 8px); right: -8px; cursor: ew-resize; }
 
         .crop-buttons {
             display: flex;
@@ -1332,7 +1332,6 @@
                 }
 
                 document.getElementById('cropModalOverlay').style.display = 'flex';
-                document.body.style.overflow = 'hidden';
                 initCanvasAndCropBox();
             };
             img.src = e.target.result;
@@ -1400,34 +1399,27 @@
     let startRect = { x: 0, y: 0, w: 0, h: 0 };
 
     const boxOverlay = document.getElementById('cropBoxOverlay');
-
-    function getClientCoordinates(e) {
-        if (e.touches && e.touches.length > 0) {
-            return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
-        }
-        return { clientX: e.clientX, clientY: e.clientY };
-    }
-
-    function startDrag(e) {
+    
+    // UPDATED: Use Pointer Events for seamless cross-platform touch and mouse support without screen panning
+    boxOverlay.addEventListener('pointerdown', (e) => {
         if (e.target.classList.contains('crop-handle')) {
             activeHandle = e.target.getAttribute('data-handle');
         } else {
             activeHandle = 'move';
         }
         isDragging = true;
-        const coords = getClientCoordinates(e);
-        startX = coords.clientX;
-        startY = coords.clientY;
+        startX = e.clientX;
+        startY = e.clientY;
         startRect = { ...cropRect };
-        if (e.cancelable) e.preventDefault();
+        boxOverlay.setPointerCapture(e.pointerId);
         e.stopPropagation();
-    }
+        e.preventDefault();
+    });
 
-    function onDrag(e) {
+    window.addEventListener('pointermove', (e) => {
         if (!isDragging || !cropSourceImage) return;
-        const coords = getClientCoordinates(e);
-        const dx = (coords.clientX - startX) * (cropSourceImage.width / renderedImgLayout.displayW);
-        const dy = (coords.clientY - startY) * (cropSourceImage.height / renderedImgLayout.displayH);
+        const dx = (e.clientX - startX) * (cropSourceImage.width / renderedImgLayout.displayW);
+        const dy = (e.clientY - startY) * (cropSourceImage.height / renderedImgLayout.displayH);
 
         let { x, y, w, h } = startRect;
         const maxW = cropSourceImage.width;
@@ -1474,22 +1466,15 @@
 
         cropRect = { x, y, w, h };
         updateCropBoxDOM();
-        if (e.cancelable) e.preventDefault();
-    }
+        e.preventDefault();
+    });
 
-    function endDrag(e) {
-        isDragging = false;
-        activeHandle = null;
-    }
-
-    boxOverlay.addEventListener('mousedown', startDrag);
-    boxOverlay.addEventListener('touchstart', startDrag, { passive: false });
-
-    window.addEventListener('mousemove', onDrag);
-    window.addEventListener('touchmove', onDrag, { passive: false });
-
-    window.addEventListener('mouseup', endDrag);
-    window.addEventListener('touchend', endDrag);
+    window.addEventListener('pointerup', (e) => {
+        if (isDragging) {
+            isDragging = false;
+            activeHandle = null;
+        }
+    });
 
     function resetCropSelection() {
         if (!cropSourceImage) return;
@@ -1512,7 +1497,6 @@
 
     function closeCropModal() {
         document.getElementById('cropModalOverlay').style.display = 'none';
-        document.body.style.overflow = '';
         activeCropIndex = null;
         cropSourceImage = null;
     }
