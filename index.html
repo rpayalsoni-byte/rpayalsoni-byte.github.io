@@ -1542,13 +1542,24 @@
             let compressedBlob;
 
             if (docType === 'text') {
-                status.innerText = 'Optimizing text streams...[cite: 6]';
+                status.innerText = 'Cleaning, rebuilding & compressing digital text streams...';
                 const { PDFDocument } = PDFLib;
                 const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-                const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
+                
+                const newPdf = await PDFDocument.create();
+                newPdf.setTitle('');
+                newPdf.setAuthor('');
+                newPdf.setSubject('');
+                newPdf.setCreator('');
+                newPdf.setProducer('');
+
+                const pageIndices = pdfDoc.getPageIndices();
+                const copiedPages = await newPdf.copyPages(pdfDoc, pageIndices);
+                copiedPages.forEach((page) => newPdf.addPage(page));
+
+                const pdfBytes = await newPdf.save({ useObjectStreams: true });
                 compressedBlob = new Blob([pdfBytes], { type: 'application/pdf' });
             } else {
-                // Integrated high-compression scanned PDF pipeline from AJS PDF Suit Final
                 compressedBlob = await compressScannedPdf(arrayBuffer, targetPct, status);
             }
 
@@ -1575,22 +1586,26 @@
         const srcPdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const outPdf = await PDFDocument.create();
         
-        // Superior compression scaling mapping from AJS PDF Suit Final
-        const maxDimension = Math.round(1400 - ((targetPct / 100) * 600));
-        const jpegQuality = Math.max(0.15, 0.75 - ((targetPct / 100) * 0.55));
+        // Increased max dimension & minimum floor for JPEG quality to ensure scanned books & camera photos remain crystal clear, vibrant, and sharp instead of dull/blurry
+        const maxDimension = Math.round(1800 - ((targetPct / 100) * 400));
+        const jpegQuality = Math.max(0.45, 0.88 - ((targetPct / 100) * 0.35));
 
         for (let i = 1; i <= srcPdf.numPages; i++) {
-            statusElement.innerText = `Processing Page ${i} of ${srcPdf.numPages}...[cite: 6]`;
+            statusElement.innerText = `Processing Page ${i} of ${srcPdf.numPages}...`;
             const page = await srcPdf.getPage(i);
             const baseViewport = page.getViewport({ scale: 1.0 });
             const currentMax = Math.max(baseViewport.width, baseViewport.height);
-            const scale = currentMax > maxDimension ? (maxDimension / currentMax) : 0.9;
+            const scale = currentMax > maxDimension ? (maxDimension / currentMax) : 1.0;
             const viewport = page.getViewport({ scale: scale });
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = viewport.width;
             canvas.height = viewport.height;
+
+            // Apply vibrant image enhancement filter to eliminate greyish/dull camera photo backgrounds and sharpen text
+            ctx.filter = 'contrast(135%) brightness(105%) saturate(110%)';
+
             await page.render({ canvasContext: ctx, viewport: viewport }).promise;
 
             const imgDataUrl = canvas.toDataURL('image/jpeg', jpegQuality);
@@ -1616,7 +1631,7 @@
             let totalOrigSize = 0;
 
             for (let i = 0; i < currentMergeFiles.length; i++) {
-                status.innerText = `Merging file ${i + 1} of ${currentMergeFiles.length}...[cite: 6]`;
+                status.innerText = `Merging file ${i + 1} of ${currentMergeFiles.length}...`;
                 totalOrigSize += currentMergeFiles[i].size;
                 const arrayBuffer = await currentMergeFiles[i].arrayBuffer();
                 const pdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
