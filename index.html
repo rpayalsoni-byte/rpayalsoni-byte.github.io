@@ -106,7 +106,6 @@
                 0 25px 50px rgba(122, 84, 19, 0.12),
                 0 0 35px rgba(201, 152, 70, 0.18),
                 inset 0 1px 2px rgba(255, 250, 240, 0.9);
-            /* REMOVED overflow: hidden to prevent clipping dropdown menus */
             display: flex;
             flex-direction: row;
         }
@@ -335,7 +334,6 @@
             outline: none;
         }
 
-        /* CUSTOM FILTER DROPDOWN WITH HOVER PREVIEWS */
         .custom-filter-dropdown {
             position: relative;
             width: 100%;
@@ -393,7 +391,6 @@
             color: var(--text-gold);
         }
 
-        /* FIRST IMAGE FILTER PREVIEW TOOLTIP WHEN HOVERING FILTER OPTIONS */
         .pdf-filter-tooltip {
             display: none;
             position: fixed;
@@ -631,6 +628,7 @@
             justify-content: center;
             align-items: center;
             padding: 15px;
+            touch-action: none;
         }
 
         .crop-modal {
@@ -666,6 +664,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            touch-action: none;
         }
 
         #cropSourceCanvas {
@@ -681,25 +680,26 @@
             background: rgba(201, 152, 70, 0.2);
             cursor: move;
             box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+            touch-action: none;
         }
 
         .crop-handle {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 18px;
+            height: 18px;
             background: #f7da94;
             border: 2px solid #7a5413;
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
-        .handle-tl { top: -6px; left: -6px; cursor: nwse-resize; }
-        .handle-tr { top: -6px; right: -6px; cursor: nesw-resize; }
-        .handle-bl { bottom: -6px; left: -6px; cursor: nesw-resize; }
-        .handle-br { bottom: -6px; right: -6px; cursor: nwse-resize; }
-        .handle-tc { top: -6px; left: calc(50% - 6px); cursor: ns-resize; }
-        .handle-bc { bottom: -6px; left: calc(50% - 6px); cursor: ns-resize; }
-        .handle-ml { top: calc(50% - 6px); left: -6px; cursor: ew-resize; }
-        .handle-mr { top: calc(50% - 6px); right: -6px; cursor: ew-resize; }
+        .handle-tl { top: -9px; left: -9px; cursor: nwse-resize; }
+        .handle-tr { top: -9px; right: -9px; cursor: nesw-resize; }
+        .handle-bl { bottom: -9px; left: -9px; cursor: nesw-resize; }
+        .handle-br { bottom: -9px; right: -9px; cursor: nwse-resize; }
+        .handle-tc { top: -9px; left: calc(50% - 9px); cursor: ns-resize; }
+        .handle-bc { bottom: -9px; left: calc(50% - 9px); cursor: ns-resize; }
+        .handle-ml { top: calc(50% - 9px); left: -9px; cursor: ew-resize; }
+        .handle-mr { top: calc(50% - 9px); right: -9px; cursor: ew-resize; }
 
         .crop-buttons {
             display: flex;
@@ -1128,7 +1128,6 @@
         }
     }
 
-    // Custom Filter Dropdown Handlers
     function toggleFilterMenu() {
         const list = document.getElementById('filterOptionsList');
         list.classList.toggle('show');
@@ -1146,7 +1145,6 @@
         document.getElementById('filterOptionsList').classList.remove('show');
     }
 
-    // DRAW FIRST IMAGE FILTER PREVIEW ON HOVER
     function showFilterPreview(mode, event) {
         const tooltip = document.getElementById('pdfFilterTooltip');
         const titleEl = document.getElementById('tooltipFilterTitle');
@@ -1171,7 +1169,6 @@
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Apply corresponding filter for accurate simulation
         if (mode === 'printable') {
             ctx.filter = 'contrast(125%) saturate(105%) brightness(102%)';
         } else if (mode === 'highcontrast') {
@@ -1204,7 +1201,6 @@
             };
             reader.readAsDataURL(currentImageItems[0].file);
         } else {
-            // Render fallback mock graphic if no image is uploaded yet
             ctx.fillStyle = '#fcf8f0';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#e2b86b';
@@ -1218,7 +1214,6 @@
             ctx.restore();
         }
 
-        // Position tooltip near cursor
         const rect = event.currentTarget.getBoundingClientRect();
         tooltip.style.left = (rect.right + 12) + 'px';
         tooltip.style.top = Math.max(10, rect.top - 40) + 'px';
@@ -1337,6 +1332,7 @@
                 }
 
                 document.getElementById('cropModalOverlay').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
                 initCanvasAndCropBox();
             };
             img.src = e.target.result;
@@ -1404,24 +1400,34 @@
     let startRect = { x: 0, y: 0, w: 0, h: 0 };
 
     const boxOverlay = document.getElementById('cropBoxOverlay');
-    
-    boxOverlay.addEventListener('mousedown', (e) => {
+
+    function getClientCoordinates(e) {
+        if (e.touches && e.touches.length > 0) {
+            return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
+        }
+        return { clientX: e.clientX, clientY: e.clientY };
+    }
+
+    function startDrag(e) {
         if (e.target.classList.contains('crop-handle')) {
             activeHandle = e.target.getAttribute('data-handle');
         } else {
             activeHandle = 'move';
         }
         isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
+        const coords = getClientCoordinates(e);
+        startX = coords.clientX;
+        startY = coords.clientY;
         startRect = { ...cropRect };
+        if (e.cancelable) e.preventDefault();
         e.stopPropagation();
-    });
+    }
 
-    window.addEventListener('mousemove', (e) => {
+    function onDrag(e) {
         if (!isDragging || !cropSourceImage) return;
-        const dx = (e.clientX - startX) * (cropSourceImage.width / renderedImgLayout.displayW);
-        const dy = (e.clientY - startY) * (cropSourceImage.height / renderedImgLayout.displayH);
+        const coords = getClientCoordinates(e);
+        const dx = (coords.clientX - startX) * (cropSourceImage.width / renderedImgLayout.displayW);
+        const dy = (coords.clientY - startY) * (cropSourceImage.height / renderedImgLayout.displayH);
 
         let { x, y, w, h } = startRect;
         const maxW = cropSourceImage.width;
@@ -1468,12 +1474,22 @@
 
         cropRect = { x, y, w, h };
         updateCropBoxDOM();
-    });
+        if (e.cancelable) e.preventDefault();
+    }
 
-    window.addEventListener('mouseup', () => {
+    function endDrag(e) {
         isDragging = false;
         activeHandle = null;
-    });
+    }
+
+    boxOverlay.addEventListener('mousedown', startDrag);
+    boxOverlay.addEventListener('touchstart', startDrag, { passive: false });
+
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('touchmove', onDrag, { passive: false });
+
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchend', endDrag);
 
     function resetCropSelection() {
         if (!cropSourceImage) return;
@@ -1496,6 +1512,7 @@
 
     function closeCropModal() {
         document.getElementById('cropModalOverlay').style.display = 'none';
+        document.body.style.overflow = '';
         activeCropIndex = null;
         cropSourceImage = null;
     }
