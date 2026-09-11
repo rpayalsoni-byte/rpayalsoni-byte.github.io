@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AJS Free Online PDF Suite - Compress, Merge, Split & Image to PDF</title>
     <meta name="description" content="Free online PDF tools. Compress, merge, split, and convert images to PDF securely and instantly in your browser with AJS PDF Suite. 100% free with zero server uploads.">
-    <meta name="keywords" content="pdf compressor, merge pdf online, split pdf, image to pdf converter, free pdf toolkit, local pdf optimizer">
     <meta name="robots" content="index, follow">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1638877639702137"
@@ -451,6 +450,177 @@
         .tool-section { display: none; }
         .tool-section.active { display: block; }
 
+        /* Image-to-PDF Custom Enhancements */
+        .img-preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 8px;
+            padding-right: 4px;
+        }
+
+        .img-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fffdfa;
+            border: 1px solid rgba(201, 152, 70, 0.3);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            position: relative;
+        }
+
+        .img-item-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Large & Clear Hover Preview Popup */
+        .img-hover-preview {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            height: 380px;
+            border: 3px solid var(--gold-mid);
+            border-radius: 14px;
+            background: #111;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            z-index: 10000;
+            object-fit: contain;
+            pointer-events: none;
+            padding: 6px;
+        }
+
+        .img-item-name:hover .img-hover-preview {
+            display: block;
+        }
+
+        .btn-action-sm {
+            background: linear-gradient(135deg, #c99846, #7a5413);
+            color: #fff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cinzel', sans-serif;
+        }
+
+        .btn-action-sm:hover { opacity: 0.9; }
+
+        /* Interactive Crop Modal with Direct Drag Box Handles */
+        .crop-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .crop-modal {
+            background: #fdfaf3;
+            border: 2px solid var(--gold-mid);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 620px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+        }
+
+        .crop-modal h3 {
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            color: var(--text-gold);
+            font-size: 1.05rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crop-container-box {
+            position: relative;
+            width: 100%;
+            height: 340px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #cropSourceCanvas {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Interactive Crop Overlay Frame with handles */
+        .crop-box-overlay {
+            position: absolute;
+            border: 2px dashed #ffd885;
+            background: rgba(201, 152, 70, 0.2);
+            cursor: move;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+        }
+
+        .crop-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #ffd885;
+            border: 2px solid #7a5413;
+            border-radius: 3px;
+        }
+
+        .handle-tl { top: -6px; left: -6px; cursor: nwse-resize; }
+        .handle-tr { top: -6px; right: -6px; cursor: nesw-resize; }
+        .handle-bl { bottom: -6px; left: -6px; cursor: nesw-resize; }
+        .handle-br { bottom: -6px; right: -6px; cursor: nwse-resize; }
+        .handle-tc { top: -6px; left: calc(50% - 6px); cursor: ns-resize; }
+        .handle-bc { bottom: -6px; left: calc(50% - 6px); cursor: ns-resize; }
+        .handle-ml { top: calc(50% - 6px); left: -6px; cursor: ew-resize; }
+        .handle-mr { top: calc(50% - 6px); right: -6px; cursor: ew-resize; }
+
+        .crop-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .btn-secondary {
+            background: #e2b86b;
+            color: #2c1d11;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+            font-family: 'Cinzel', sans-serif;
+            font-size: 0.8rem;
+        }
+
         .seo-section {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -526,6 +696,7 @@
             .controls-panel { width: 100%; padding: 22px; }
             .nav-tabs { grid-template-columns: repeat(2, 1fr); }
             .steps-grid { grid-template-columns: 1fr; }
+            .img-hover-preview { width: 280px; height: 280px; }
         }
     </style>
 </head>
@@ -696,7 +867,7 @@
                 <div id="formContainer4" class="form-disabled">
                     <div class="form-grid">
                         <div class="group">
-                            <label>Select Image File(s) (JPG, PNG, WEBP, BMP, etc.)</label>
+                            <label>Select Image File(s)</label>
                             <div class="file-dropzone">
                                 <input type="file" id="imgFileInput" accept="image/*" multiple onchange="handleImageFiles(this)">
                                 <div class="file-dropzone-text" id="dropzoneText4">
@@ -704,6 +875,28 @@
                                 </div>
                             </div>
                             <div id="sizeInfo4" class="size-info"></div>
+                            <div id="imgPreviewList" class="img-preview-container"></div>
+                        </div>
+                        <div class="group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div>
+                                <label for="imgQualityMode">Image Quality</label>
+                                <select id="imgQualityMode">
+                                    <option value="original">Keep Original Quality</option>
+                                    <option value="best">Best Quality (High)</option>
+                                    <option value="balanced">Balanced (Optimized)</option>
+                                    <option value="compressed">Max Compressed</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="imgFilterMode">Image Filter</label>
+                                <select id="imgFilterMode">
+                                    <option value="none">Normal (No Filter)</option>
+                                    <option value="grayscale">Grayscale / B&W</option>
+                                    <option value="sepia">Vintage Sepia</option>
+                                    <option value="highcontrast">High Contrast Document</option>
+                                    <option value="brightness">Brighten / Enhance</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <button id="imgBtn" class="btn-submit" onclick="convertImagesToPDF()" disabled>Convert Images to PDF</button>
@@ -716,6 +909,34 @@
             </div>
         </section>
     </main>
+
+    <!-- INTERACTIVE CROP MODAL -->
+    <div id="cropModalOverlay" class="crop-modal-overlay">
+        <div class="crop-modal">
+            <h3 id="cropModalTitle">
+                <span>Interactive Image Crop</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">Drag corners or edges to adjust crop window</span>
+            </h3>
+            <div class="crop-container-box" id="cropContainerBox">
+                <canvas id="cropSourceCanvas"></canvas>
+                <div id="cropBoxOverlay" class="crop-box-overlay">
+                    <div class="crop-handle handle-tl" data-handle="tl"></div>
+                    <div class="crop-handle handle-tc" data-handle="tc"></div>
+                    <div class="crop-handle handle-tr" data-handle="tr"></div>
+                    <div class="crop-handle handle-ml" data-handle="ml"></div>
+                    <div class="crop-handle handle-mr" data-handle="mr"></div>
+                    <div class="crop-handle handle-bl" data-handle="bl"></div>
+                    <div class="crop-handle handle-bc" data-handle="bc"></div>
+                    <div class="crop-handle handle-br" data-handle="br"></div>
+                </div>
+            </div>
+            <div class="crop-buttons">
+                <button class="btn-secondary" onclick="resetCropSelection()">Reset Full</button>
+                <button class="btn-secondary" onclick="closeCropModal()">Cancel</button>
+                <button class="btn-submit" style="padding: 10px; flex: 1;" onclick="saveCropSelection()">Apply Crop</button>
+            </div>
+        </div>
+    </div>
 
     <section class="seo-section">
         <h2>How AJS PDF Suite Engine Works</h2>
@@ -750,7 +971,12 @@
     let currentCompressFile = null;
     let currentSplitFile = null;
     let currentMergeFiles = [];
-    let currentImageFiles = [];
+    let currentImageItems = []; 
+    let activeCropIndex = null;
+    let cropSourceImage = null;
+
+    // Crop box state in image natural coordinates
+    let cropRect = { x: 0, y: 0, w: 100, h: 100 }; // stored as percentages or pixels
 
     function formatBytes(bytes, decimals = 2) {
         if (bytes === 0) return '0 Bytes';
@@ -781,7 +1007,7 @@
         } else if(toolName === 'img2pdf') {
             clickedBtn.classList.add('active');
             document.getElementById('tool-img2pdf').classList.add('active');
-            document.getElementById('taglineBanner').innerText = '🖼️ Convert any image format (JPG, PNG, WEBP, BMP) instantly into a secure PDF document.';
+            document.getElementById('taglineBanner').innerText = '🖼️ Convert images with quality options, custom filters, and per-image cropping into a secure PDF.';
         }
     }
 
@@ -837,14 +1063,227 @@
 
     function handleImageFiles(input) {
         if (input.files && input.files.length > 0) {
-            currentImageFiles = Array.from(input.files);
-            document.getElementById('dropzoneText4').innerHTML = `Selected: <strong>${currentImageFiles.length} image(s)</strong>`;
+            currentImageItems = Array.from(input.files).map(file => ({
+                file: file,
+                crop: null 
+            }));
+            document.getElementById('dropzoneText4').innerHTML = `Selected: <strong>${currentImageItems.length} image(s)</strong>`;
             const sizeBox = document.getElementById('sizeInfo4');
             sizeBox.style.display = 'block';
-            const totalBytes = currentImageFiles.reduce((acc, file) => acc + file.size, 0);
+            const totalBytes = currentImageItems.reduce((acc, item) => acc + item.file.size, 0);
             sizeBox.innerText = `Total Size: ${formatBytes(totalBytes)}`;
+
+            renderImagePreviews();
             updateButtonStates();
         }
+    }
+
+    function renderImagePreviews() {
+        const container = document.getElementById('imgPreviewList');
+        container.innerHTML = '';
+        currentImageItems.forEach((item, index) => {
+            const row = document.createElement('div');
+            row.className = 'img-item-row';
+
+            const url = URL.createObjectURL(item.file);
+            const cropText = item.crop ? '✂️ Cropped' : 'Crop';
+            
+            row.innerHTML = `
+                <span class="img-item-name">
+                    📄 ${item.file.name} (${formatBytes(item.file.size)})
+                    <img class="img-hover-preview" src="${url}" alt="Preview">
+                </span>
+                <div style="display:flex; gap:6px; align-items:center;">
+                    <button class="btn-action-sm" onclick="openCropModal(${index})">${cropText}</button>
+                </div>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    // Interactive Crop Implementation
+    function openCropModal(index) {
+        activeCropIndex = index;
+        const item = currentImageItems[index];
+        document.getElementById('cropModalTitle').querySelector('span').innerText = `Crop: ${item.file.name}`;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                cropSourceImage = img;
+                
+                if (item.crop) {
+                    cropRect = { ...item.crop };
+                } else {
+                    cropRect = { x: 0, y: 0, w: img.width, h: img.height };
+                }
+
+                document.getElementById('cropModalOverlay').style.display = 'flex';
+                initCanvasAndCropBox();
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(item.file);
+    }
+
+    let renderedImgLayout = { left: 0, top: 0, displayW: 0, displayH: 0 };
+
+    function initCanvasAndCropBox() {
+        if (!cropSourceImage) return;
+        const canvas = document.getElementById('cropSourceCanvas');
+        const container = document.getElementById('cropContainerBox');
+        const ctx = canvas.getContext('2d');
+
+        const cWidth = container.clientWidth;
+        const cHeight = container.clientHeight;
+
+        canvas.width = cropSourceImage.width;
+        canvas.height = cropSourceImage.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(cropSourceImage, 0, 0);
+
+        // Calculate rendered size inside container due to object-fit: contain
+        const imgRatio = cropSourceImage.width / cropSourceImage.height;
+        const containerRatio = cWidth / cHeight;
+        
+        let dW, dH, dLeft, dTop;
+        if (imgRatio > containerRatio) {
+            dW = cWidth;
+            dH = cWidth / imgRatio;
+            dLeft = 0;
+            dTop = (cHeight - dH) / 2;
+        } else {
+            dH = cHeight;
+            dW = cHeight * imgRatio;
+            dTop = 0;
+            dLeft = (cWidth - dW) / 2;
+        }
+
+        renderedImgLayout = { left: dLeft, top: dTop, displayW: dW, displayH: dH };
+        updateCropBoxDOM();
+    }
+
+    function updateCropBoxDOM() {
+        const box = document.getElementById('cropBoxOverlay');
+        const layout = renderedImgLayout;
+        
+        const scaleX = layout.displayW / cropSourceImage.width;
+        const scaleY = layout.displayH / cropSourceImage.height;
+
+        const leftPx = layout.left + (cropRect.x * scaleX);
+        const topPx = layout.top + (cropRect.y * scaleY);
+        const widthPx = cropRect.w * scaleX;
+        const heightPx = cropRect.h * scaleY;
+
+        box.style.left = leftPx + 'px';
+        box.style.top = topPx + 'px';
+        box.style.width = widthPx + 'px';
+        box.style.height = heightPx + 'px';
+    }
+
+    // Dragging and resizing logic for crop box
+    let isDragging = false;
+    let activeHandle = null;
+    let startX = 0, startY = 0;
+    let startRect = { x: 0, y: 0, w: 0, h: 0 };
+
+    const boxOverlay = document.getElementById('cropBoxOverlay');
+    
+    boxOverlay.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('crop-handle')) {
+            activeHandle = e.target.getAttribute('data-handle');
+        } else {
+            activeHandle = 'move';
+        }
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        startRect = { ...cropRect };
+        e.stopPropagation();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging || !cropSourceImage) return;
+        const dx = (e.clientX - startX) * (cropSourceImage.width / renderedImgLayout.displayW);
+        const dy = (e.clientY - startY) * (cropSourceImage.height / renderedImgLayout.displayH);
+
+        let { x, y, w, h } = startRect;
+        const maxW = cropSourceImage.width;
+        const maxH = cropSourceImage.height;
+
+        if (activeHandle === 'move') {
+            x = Math.max(0, Math.min(maxW - w, startRect.x + dx));
+            y = Math.max(0, Math.min(maxH - h, startRect.y + dy));
+        } else if (activeHandle === 'tl') {
+            let newX = Math.max(0, Math.min(startRect.x + startRect.w - 50, startRect.x + dx));
+            let newY = Math.max(0, Math.min(startRect.y + startRect.h - 50, startRect.y + dy));
+            w = startRect.w - (newX - startRect.x);
+            h = startRect.h - (newY - startRect.y);
+            x = newX;
+            y = newY;
+        } else if (activeHandle === 'tr') {
+            let newW = Math.max(50, Math.min(maxW - startRect.x, startRect.w + dx));
+            let newY = Math.max(0, Math.min(startRect.y + startRect.h - 50, startRect.y + dy));
+            h = startRect.h - (newY - startRect.y);
+            w = newW;
+            y = newY;
+        } else if (activeHandle === 'bl') {
+            let newX = Math.max(0, Math.min(startRect.x + startRect.w - 50, startRect.x + dx));
+            let newH = Math.max(50, Math.min(maxH - startRect.y, startRect.h + dy));
+            w = startRect.w - (newX - startRect.x);
+            h = newH;
+            x = newX;
+        } else if (activeHandle === 'br') {
+            w = Math.max(50, Math.min(maxW - startRect.x, startRect.w + dx));
+            h = Math.max(50, Math.min(maxH - startRect.y, startRect.h + dy));
+        } else if (activeHandle === 'tc') {
+            let newY = Math.max(0, Math.min(startRect.y + startRect.h - 50, startRect.y + dy));
+            h = startRect.h - (newY - startRect.y);
+            y = newY;
+        } else if (activeHandle === 'bc') {
+            h = Math.max(50, Math.min(maxH - startRect.y, startRect.h + dy));
+        } else if (activeHandle === 'ml') {
+            let newX = Math.max(0, Math.min(startRect.x + startRect.w - 50, startRect.x + dx));
+            w = startRect.w - (newX - startRect.x);
+            x = newX;
+        } else if (activeHandle === 'mr') {
+            w = Math.max(50, Math.min(maxW - startRect.x, startRect.w + dx));
+        }
+
+        cropRect = { x, y, w, h };
+        updateCropBoxDOM();
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        activeHandle = null;
+    });
+
+    function resetCropSelection() {
+        if (!cropSourceImage) return;
+        cropRect = { x: 0, y: 0, w: cropSourceImage.width, h: cropSourceImage.height };
+        updateCropBoxDOM();
+    }
+
+    function saveCropSelection() {
+        if (activeCropIndex === null || !cropSourceImage) return;
+        
+        // If it covers almost the whole image, set to null
+        if (cropRect.x <= 2 && cropRect.y <= 2 && Math.abs(cropRect.w - cropSourceImage.width) <= 5 && Math.abs(cropRect.h - cropSourceImage.height) <= 5) {
+            currentImageItems[activeCropIndex].crop = null;
+        } else {
+            currentImageItems[activeCropIndex].crop = { ...cropRect };
+        }
+
+        closeCropModal();
+        renderImagePreviews();
+    }
+
+    function closeCropModal() {
+        document.getElementById('cropModalOverlay').style.display = 'none';
+        activeCropIndex = null;
+        cropSourceImage = null;
     }
 
     function updateButtonStates() {
@@ -852,7 +1291,7 @@
         document.getElementById('compressBtn').disabled = !(isVerified && currentCompressFile);
         document.getElementById('mergeBtn').disabled = !(isVerified && currentMergeFiles.length >= 2);
         document.getElementById('splitBtn').disabled = !(isVerified && currentSplitFile);
-        document.getElementById('imgBtn').disabled = !(isVerified && currentImageFiles.length > 0);
+        document.getElementById('imgBtn').disabled = !(isVerified && currentImageItems.length > 0);
     }
 
     async function compressPDF() {
@@ -899,7 +1338,7 @@
             for (let file of currentMergeFiles) {
                 const arrayBuffer = await file.arrayBuffer();
                 const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
-                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getgetPageIndices ? pdf.getPageIndices() : Array.from({length: pdf.getPageCount()}, (_, i) => i));
+                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices ? pdf.getPageIndices() : Array.from({length: pdf.getPageCount()}, (_, i) => i));
                 copiedPages.forEach((page) => mergedPdf.addPage(page));
             }
             const mergedPdfBytes = await mergedPdf.save();
@@ -909,7 +1348,6 @@
             const downloadLink = document.getElementById('downloadLink2');
             downloadLink.href = url;
 
-            const totalOriginal = currentMergeFiles.reduce((acc, f) => acc + f.size, 0);
             document.getElementById('resultStats2').innerHTML = `✅ Successfully Merged ${currentMergeFiles.length} files!<br>Total Size: <strong>${formatBytes(blob.size)}</strong>`;
             statusBox.style.display = 'none';
             resultCard.style.display = 'block';
@@ -934,10 +1372,8 @@
             
             let pagesToExtract = [];
             if (!pageRangeStr) {
-                // Default extract first page if empty
                 pagesToExtract = [0];
             } else {
-                // Parse range like "1-3, 5"
                 const parts = pageRangeStr.split(',');
                 parts.forEach(part => {
                     if (part.includes('-')) {
@@ -976,38 +1412,37 @@
     }
 
     async function convertImagesToPDF() {
-        if (currentImageFiles.length === 0) return;
+        if (currentImageItems.length === 0) return;
         const statusBox = document.getElementById('status4');
         const resultCard = document.getElementById('result4');
         statusBox.style.display = 'block';
-        statusBox.innerText = 'Converting images to PDF locally...';
+        statusBox.innerText = 'Converting & processing images locally...';
         resultCard.style.display = 'none';
 
         try {
+            const qualityMode = document.getElementById('imgQualityMode').value;
+            const filterMode = document.getElementById('imgFilterMode').value;
+
             const pdfDoc = await PDFLib.PDFDocument.create();
 
-            for (let file of currentImageFiles) {
-                const arrayBuffer = await file.arrayBuffer();
-                let embeddedImage;
-                if (file.type === 'image/png') {
-                    embeddedImage = await pdfDoc.embedPng(arrayBuffer);
+            for (let item of currentImageItems) {
+                let imgBytes;
+
+                if (qualityMode === 'original' && filterMode === 'none' && !item.crop) {
+                    imgBytes = await item.file.arrayBuffer();
                 } else {
-                    // Default fallback for jpeg/webp/etc via canvas or standard embed if supported
+                    imgBytes = await processImageWithCanvas(item, qualityMode, filterMode);
+                }
+
+                let embeddedImage;
+                try {
+                    embeddedImage = await pdfDoc.embedJpg(imgBytes);
+                } catch {
                     try {
-                        embeddedImage = await pdfDoc.embedJpg(arrayBuffer);
+                        embeddedImage = await pdfDoc.embedPng(imgBytes);
                     } catch {
-                        // Fallback conversion through canvas
-                        const img = document.createElement('img');
-                        img.src = URL.createObjectURL(file);
-                        await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; });
-                        const canvas = document.createElement('canvas');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0);
-                        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-                        const resBytes = await fetch(dataUrl).then(res => res.arrayBuffer());
-                        embeddedImage = await pdfDoc.embedJpg(resBytes);
+                        const baseConv = await processImageFallbackToJpeg(imgBytes);
+                        embeddedImage = await pdfDoc.embedJpg(baseConv);
                     }
                 }
 
@@ -1027,12 +1462,103 @@
             const downloadLink = document.getElementById('downloadLink4');
             downloadLink.href = url;
 
-            document.getElementById('resultStats4').innerHTML = `✅ Successfully Converted ${currentImageFiles.length} image(s)!<br>File Size: <strong>${formatBytes(blob.size)}</strong>`;
+            document.getElementById('resultStats4').innerHTML = `✅ Successfully Converted ${currentImageItems.length} image(s)!<br>File Size: <strong>${formatBytes(blob.size)}</strong>`;
             statusBox.style.display = 'none';
             resultCard.style.display = 'block';
         } catch (err) {
             statusBox.innerText = 'Error converting images: ' + err.message;
         }
+    }
+
+    function processImageWithCanvas(item, qualityMode, filterMode) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    
+                    let srcX = 0, srcY = 0, srcW = img.width, srcH = img.height;
+                    if (item.crop) {
+                        srcX = item.crop.x;
+                        srcY = item.crop.y;
+                        srcW = item.crop.w;
+                        srcH = item.crop.h;
+                    }
+
+                    let scale = 1.0;
+                    let jpegQuality = 0.92;
+
+                    if (qualityMode === 'best') {
+                        scale = 1.0;
+                        jpegQuality = 0.95;
+                    } else if (qualityMode === 'balanced') {
+                        scale = 0.85;
+                        jpegQuality = 0.80;
+                    } else if (qualityMode === 'compressed') {
+                        scale = 0.65;
+                        jpegQuality = 0.60;
+                    }
+
+                    canvas.width = Math.round(srcW * scale);
+                    canvas.height = Math.round(srcH * scale);
+                    const ctx = canvas.getContext('2d');
+
+                    if (filterMode === 'highcontrast') {
+                        ctx.filter = 'contrast(160%) brightness(110%)';
+                    } else if (filterMode === 'grayscale') {
+                        ctx.filter = 'grayscale(100%)';
+                    } else if (filterMode === 'sepia') {
+                        ctx.filter = 'sepia(100%)';
+                    } else if (filterMode === 'brightness') {
+                        ctx.filter = 'brightness(120%)';
+                    } else {
+                        ctx.filter = 'none';
+                    }
+
+                    ctx.drawImage(img, srcX, srcY, srcW, srcH, 0, 0, canvas.width, canvas.height);
+
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            reject(new Error('Canvas conversion failed'));
+                            return;
+                        }
+                        const reader2 = new FileReader();
+                        reader2.onload = function(e2) {
+                            resolve(e2.target.result);
+                        };
+                        reader2.onerror = reject;
+                        reader2.readAsArrayBuffer(blob);
+                    }, 'image/jpeg', jpegQuality);
+                };
+                img.onerror = reject;
+                img.src = e.target.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(item.file);
+        });
+    }
+
+    function processImageFallbackToJpeg(arrayBuffer) {
+        return new Promise((resolve, reject) => {
+            const blob = new Blob([arrayBuffer]);
+            const url = URL.createObjectURL(blob);
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                canvas.toBlob((b) => {
+                    const r = new FileReader();
+                    r.onload = (e) => resolve(e.target.result);
+                    r.readAsArrayBuffer(b);
+                }, 'image/jpeg', 0.9);
+            };
+            img.onerror = reject;
+            img.src = url;
+        });
     }
 </script>
 
