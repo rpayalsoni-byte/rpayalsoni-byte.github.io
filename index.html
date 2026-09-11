@@ -16,11 +16,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Montserrat:wght@700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold-light: #fff3d1;
+            --gold-light: #f7edd2;
             --gold-mid: #c99846;
             --gold-dark: #7a5413;
             --bg-light: #f9f5ed;
-            --card-bg: rgba(255, 252, 245, 0.94);
+            --card-bg: rgba(255, 250, 240, 0.96);
             --card-border: rgba(201, 152, 70, 0.4);
             --text-gold: #7a5413;
             --text-dark: #2c1d11;
@@ -37,7 +37,7 @@
 
         body {
             background: 
-                radial-gradient(ellipse at 30% 20%, rgba(255, 238, 184, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 20%, rgba(247, 230, 200, 0.6) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 80%, rgba(201, 152, 70, 0.25) 0%, transparent 50%),
                 radial-gradient(circle at 50% 50%, #fcf8f0 0%, #f0e4d0 60%, #dfcdb0 100%);
             color: var(--text-dark);
@@ -85,13 +85,13 @@
         .tab-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 22px rgba(122, 84, 19, 0.25);
-            background: linear-gradient(135deg, #fff3d1 0%, #e2b86b 100%);
+            background: linear-gradient(135deg, #fbf0d8 0%, #e2b86b 100%);
         }
 
         .tab-btn.active {
             background: linear-gradient(135deg, #c99846 0%, #7a5413 100%);
-            color: #fffdf8;
-            border-color: #ffd885;
+            color: #fcf9f0;
+            border-color: #f7da94;
             box-shadow: 0 8px 22px rgba(122, 84, 19, 0.35);
         }
 
@@ -105,7 +105,7 @@
             box-shadow: 
                 0 25px 50px rgba(122, 84, 19, 0.12),
                 0 0 35px rgba(201, 152, 70, 0.18),
-                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+                inset 0 1px 2px rgba(255, 250, 240, 0.9);
             overflow: hidden;
             display: flex;
             flex-direction: row;
@@ -129,11 +129,11 @@
             height: 150px;
             border-radius: 50%;
             padding: 6px;
-            background: linear-gradient(135deg, #fffdf8 0%, #ffd885 25%, #c99846 60%, #6e4911 100%);
+            background: linear-gradient(135deg, #fcf9f0 0%, #f7da94 25%, #c99846 60%, #6e4911 100%);
             box-shadow: 
                 0 12px 28px rgba(122, 84, 19, 0.25),
                 0 0 20px rgba(201, 152, 70, 0.25),
-                inset 0 2px 4px rgba(255, 255, 255, 0.9);
+                inset 0 2px 4px rgba(255, 250, 240, 0.9);
             margin-bottom: 20px;
             position: relative;
         }
@@ -142,7 +142,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #fffdf8 0%, #f5e7d0 100%);
+            background: radial-gradient(circle at 35% 35%, #fcf9f0 0%, #f5e7d0 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -252,7 +252,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: inset 0 1px 3px rgba(255,255,255,0.8);
+            box-shadow: inset 0 1px 3px rgba(255,250,240,0.8);
         }
 
         .captcha-left { display: flex; align-items: center; gap: 12px; }
@@ -274,7 +274,7 @@
             margin-bottom: 18px;
         }
 
-        .group { margin-bottom: 0; }
+        .group { margin-bottom: 0; position: relative; }
 
         label {
             display: block;
@@ -299,7 +299,7 @@
 
         .file-dropzone:hover {
             border-color: var(--gold-mid);
-            background: #fffdfa;
+            background: #fbf9f0;
         }
 
         .file-dropzone input[type="file"] {
@@ -329,6 +329,104 @@
             color: var(--text-dark);
             font-size: 0.85rem;
             outline: none;
+        }
+
+        /* CUSTOM FILTER DROPDOWN WITH HOVER PREVIEWS */
+        .custom-filter-dropdown {
+            position: relative;
+            width: 100%;
+            user-select: none;
+        }
+
+        .filter-select-trigger {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .filter-options-list {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            width: 100%;
+            background: #fdfaf3;
+            border: 1px solid var(--gold-mid);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(122,84,19,0.2);
+            z-index: 999;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .filter-options-list.show {
+            display: block;
+        }
+
+        .filter-option-item {
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(201,152,70,0.15);
+        }
+
+        .filter-option-item:last-child { border-bottom: none; }
+        .filter-option-item:hover {
+            background: rgba(201, 152, 70, 0.18);
+            color: var(--text-gold);
+        }
+
+        /* FIRST IMAGE FILTER PREVIEW TOOLTIP WHEN HOVERING FILTER OPTIONS */
+        .pdf-filter-tooltip {
+            display: none;
+            position: fixed;
+            width: 240px;
+            background: #221508;
+            border: 3px solid var(--gold-mid);
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            z-index: 100000;
+            pointer-events: none;
+        }
+
+        .pdf-filter-tooltip-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #f7da94;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .pdf-filter-preview-box {
+            width: 100%;
+            height: 260px;
+            background: #fcf8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #previewFilterCanvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .range-header {
@@ -362,8 +460,8 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ffd885, #7a5413);
-            border: 2px solid #fffdf8;
+            background: linear-gradient(135deg, #f7da94, #7a5413);
+            border: 2px solid #fcf9f0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             cursor: pointer;
         }
@@ -380,13 +478,13 @@
             width: 100%;
             padding: 13px;
             background: linear-gradient(135deg, #c99846 0%, #7a5413 100%);
-            border: 1px solid #ffd885;
+            border: 1px solid #f7da94;
             border-radius: 12px;
             font-family: 'Cinzel', sans-serif;
             font-weight: 800;
             font-size: 0.9rem;
             letter-spacing: 1px;
-            color: #fffdf8;
+            color: #fcf9f0;
             cursor: pointer;
             box-shadow: 0 6px 18px rgba(122, 84, 19, 0.25);
             transition: all 0.2s ease;
@@ -436,7 +534,7 @@
             width: 100%;
             text-align: center;
             background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
-            color: #fffdf8;
+            color: #fcf9f0;
             padding: 10px;
             text-decoration: none;
             font-family: 'Cinzel', sans-serif;
@@ -450,7 +548,6 @@
         .tool-section { display: none; }
         .tool-section.active { display: block; }
 
-        /* Image-to-PDF Custom Enhancements */
         .img-preview-container {
             display: flex;
             flex-direction: column;
@@ -465,7 +562,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #fffdfa;
+            background: #fbf9f0;
             border: 1px solid rgba(201, 152, 70, 0.3);
             padding: 6px 10px;
             border-radius: 8px;
@@ -484,7 +581,6 @@
             position: relative;
         }
 
-        /* Large & Clear Hover Preview Popup */
         .img-hover-preview {
             display: none;
             position: fixed;
@@ -509,7 +605,7 @@
 
         .btn-action-sm {
             background: linear-gradient(135deg, #c99846, #7a5413);
-            color: #fff;
+            color: #fcf9f0;
             border: none;
             padding: 4px 10px;
             border-radius: 6px;
@@ -521,7 +617,6 @@
 
         .btn-action-sm:hover { opacity: 0.9; }
 
-        /* Interactive Crop Modal with Direct Drag Box Handles */
         .crop-modal-overlay {
             display: none;
             position: fixed;
@@ -575,10 +670,9 @@
             object-fit: contain;
         }
 
-        /* Interactive Crop Overlay Frame with handles */
         .crop-box-overlay {
             position: absolute;
-            border: 2px dashed #ffd885;
+            border: 2px dashed #f7da94;
             background: rgba(201, 152, 70, 0.2);
             cursor: move;
             box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
@@ -588,7 +682,7 @@
             position: absolute;
             width: 12px;
             height: 12px;
-            background: #ffd885;
+            background: #f7da94;
             border: 2px solid #7a5413;
             border-radius: 3px;
         }
@@ -723,7 +817,7 @@
                                 <stop offset="100%" stop-color="#523608" />
                             </linearGradient>
                             <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#ffd885" />
+                                <stop offset="0%" stop-color="#f7da94" />
                                 <stop offset="50%" stop-color="#c99846" />
                                 <stop offset="100%" stop-color="#6e4911" />
                             </linearGradient>
@@ -888,14 +982,25 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="imgFilterMode">Image Filter</label>
-                                <select id="imgFilterMode">
-                                    <option value="none">Normal (No Filter)</option>
-                                    <option value="grayscale">Grayscale / B&W</option>
-                                    <option value="sepia">Vintage Sepia</option>
-                                    <option value="highcontrast">High Contrast Document</option>
-                                    <option value="brightness">Brighten / Enhance</option>
-                                </select>
+                                <label>Image Filter (Hover for Preview)</label>
+                                <div class="custom-filter-dropdown" id="customFilterDropdown">
+                                    <div class="filter-select-trigger" onclick="toggleFilterMenu()">
+                                        <span id="selectedFilterLabel">Print-Optimized (300 DPI / Sharp)</span>
+                                        <span>▼</span>
+                                    </div>
+                                    <div class="filter-options-list" id="filterOptionsList">
+                                        <div class="filter-option-item" data-value="none" onmouseenter="showFilterPreview('none', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('none', 'Normal (No Filter)')">Normal (No Filter)</div>
+                                        <div class="filter-option-item" data-value="printable" onmouseenter="showFilterPreview('printable', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('printable', 'Print-Optimized (300 DPI / Sharp)')">Print-Optimized (300 DPI / Sharp)</div>
+                                        <div class="filter-option-item" data-value="grayscale" onmouseenter="showFilterPreview('grayscale', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('grayscale', 'Grayscale / B&W')">Grayscale / B&W</div>
+                                        <div class="filter-option-item" data-value="sepia" onmouseenter="showFilterPreview('sepia', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('sepia', 'Vintage Sepia')">Vintage Sepia</div>
+                                        <div class="filter-option-item" data-value="highcontrast" onmouseenter="showFilterPreview('highcontrast', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('highcontrast', 'High Contrast Document')">High Contrast Document</div>
+                                        <div class="filter-option-item" data-value="brightness" onmouseenter="showFilterPreview('brightness', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('brightness', 'Brighten / Enhance')">Brighten / Enhance</div>
+                                        <div class="filter-option-item" data-value="invert" onmouseenter="showFilterPreview('invert', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('invert', 'Invert Colors (Dark Mode)')">Invert Colors (Dark Mode)</div>
+                                        <div class="filter-option-item" data-value="cooltone" onmouseenter="showFilterPreview('cooltone', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('cooltone', 'Cool Tone / Cyan Tint')">Cool Tone / Cyan Tint</div>
+                                        <div class="filter-option-item" data-value="warmtone" onmouseenter="showFilterPreview('warmtone', event)" onmouseleave="hideFilterPreview()" onclick="selectFilterOption('warmtone', 'Warm Golden Tint')">Warm Golden Tint</div>
+                                    </div>
+                                    <input type="hidden" id="imgFilterMode" value="printable">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -909,6 +1014,14 @@
             </div>
         </section>
     </main>
+
+    <!-- FLOATING FILTER PREVIEW TOOLTIP -->
+    <div id="pdfFilterTooltip" class="pdf-filter-tooltip">
+        <div class="pdf-filter-tooltip-title" id="tooltipFilterTitle">Image Filter Preview</div>
+        <div class="pdf-filter-preview-box">
+            <canvas id="previewFilterCanvas" width="200" height="260"></canvas>
+        </div>
+    </div>
 
     <!-- INTERACTIVE CROP MODAL -->
     <div id="cropModalOverlay" class="crop-modal-overlay">
@@ -975,8 +1088,7 @@
     let activeCropIndex = null;
     let cropSourceImage = null;
 
-    // Crop box state in image natural coordinates
-    let cropRect = { x: 0, y: 0, w: 100, h: 100 }; // stored as percentages or pixels
+    let cropRect = { x: 0, y: 0, w: 100, h: 100 };
 
     function formatBytes(bytes, decimals = 2) {
         if (bytes === 0) return '0 Bytes';
@@ -1009,6 +1121,107 @@
             document.getElementById('tool-img2pdf').classList.add('active');
             document.getElementById('taglineBanner').innerText = '🖼️ Convert images with quality options, custom filters, and per-image cropping into a secure PDF.';
         }
+    }
+
+    // Custom Filter Dropdown Handlers
+    function toggleFilterMenu() {
+        const list = document.getElementById('filterOptionsList');
+        list.classList.toggle('show');
+    }
+
+    window.addEventListener('click', function(e) {
+        if (!document.getElementById('customFilterDropdown').contains(e.target)) {
+            document.getElementById('filterOptionsList').classList.remove('show');
+        }
+    });
+
+    function selectFilterOption(val, labelText) {
+        document.getElementById('imgFilterMode').value = val;
+        document.getElementById('selectedFilterLabel').innerText = labelText;
+        document.getElementById('filterOptionsList').classList.remove('show');
+    }
+
+    // DRAW FIRST IMAGE FILTER PREVIEW ON HOVER
+    function showFilterPreview(mode, event) {
+        const tooltip = document.getElementById('pdfFilterTooltip');
+        const titleEl = document.getElementById('tooltipFilterTitle');
+        const canvas = document.getElementById('previewFilterCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const filterNames = {
+            'none': 'Normal Preview',
+            'printable': 'Print-Optimized Preview',
+            'grayscale': 'Grayscale Preview',
+            'sepia': 'Sepia Preview',
+            'highcontrast': 'High Contrast Preview',
+            'brightness': 'Brightened Preview',
+            'invert': 'Inverted Colors Preview',
+            'cooltone': 'Cool Tone Preview',
+            'warmtone': 'Warm Golden Tint Preview'
+        };
+
+        titleEl.innerText = filterNames[mode] || 'Image Preview';
+
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Apply corresponding filter for accurate simulation
+        if (mode === 'printable') {
+            ctx.filter = 'contrast(125%) saturate(105%) brightness(102%)';
+        } else if (mode === 'highcontrast') {
+            ctx.filter = 'contrast(160%) brightness(110%)';
+        } else if (mode === 'grayscale') {
+            ctx.filter = 'grayscale(100%)';
+        } else if (mode === 'sepia') {
+            ctx.filter = 'sepia(100%)';
+        } else if (mode === 'brightness') {
+            ctx.filter = 'brightness(120%)';
+        } else if (mode === 'invert') {
+            ctx.filter = 'invert(100%) hue-rotate(180deg)';
+        } else if (mode === 'cooltone') {
+            ctx.filter = 'sepia(40%) hue-rotate(180deg) saturate(120%)';
+        } else if (mode === 'warmtone') {
+            ctx.filter = 'sepia(70%) saturate(140%) brightness(105%)';
+        } else {
+            ctx.filter = 'none';
+        }
+
+        if (currentImageItems.length > 0) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.restore();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(currentImageItems[0].file);
+        } else {
+            // Render fallback mock graphic if no image is uploaded yet
+            ctx.fillStyle = '#fcf8f0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#e2b86b';
+            ctx.fillRect(20, 20, 160, 160);
+            ctx.fillStyle = '#7a5413';
+            ctx.font = 'bold 11px sans-serif';
+            ctx.fillText('Upload Image First', 50, 105);
+            ctx.fillStyle = '#6e594b';
+            ctx.fillRect(20, 195, 160, 10);
+            ctx.fillRect(20, 215, 120, 10);
+            ctx.restore();
+        }
+
+        // Position tooltip near cursor
+        const rect = event.currentTarget.getBoundingClientRect();
+        tooltip.style.left = (rect.right + 12) + 'px';
+        tooltip.style.top = Math.max(10, rect.top - 40) + 'px';
+        tooltip.style.display = 'block';
+    }
+
+    function hideFilterPreview() {
+        document.getElementById('pdfFilterTooltip').style.display = 'none';
     }
 
     function toggleFormAccess(isChecked) {
@@ -1101,7 +1314,6 @@
         });
     }
 
-    // Interactive Crop Implementation
     function openCropModal(index) {
         activeCropIndex = index;
         const item = currentImageItems[index];
@@ -1143,7 +1355,6 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(cropSourceImage, 0, 0);
 
-        // Calculate rendered size inside container due to object-fit: contain
         const imgRatio = cropSourceImage.width / cropSourceImage.height;
         const containerRatio = cWidth / cHeight;
         
@@ -1182,7 +1393,6 @@
         box.style.height = heightPx + 'px';
     }
 
-    // Dragging and resizing logic for crop box
     let isDragging = false;
     let activeHandle = null;
     let startX = 0, startY = 0;
@@ -1269,7 +1479,6 @@
     function saveCropSelection() {
         if (activeCropIndex === null || !cropSourceImage) return;
         
-        // If it covers almost the whole image, set to null
         if (cropRect.x <= 2 && cropRect.y <= 2 && Math.abs(cropRect.w - cropSourceImage.width) <= 5 && Math.abs(cropRect.h - cropSourceImage.height) <= 5) {
             currentImageItems[activeCropIndex].crop = null;
         } else {
@@ -1489,7 +1698,10 @@
                     let scale = 1.0;
                     let jpegQuality = 0.92;
 
-                    if (qualityMode === 'best') {
+                    if (filterMode === 'printable') {
+                        scale = 1.25; 
+                        jpegQuality = 0.98;
+                    } else if (qualityMode === 'best') {
                         scale = 1.0;
                         jpegQuality = 0.95;
                     } else if (qualityMode === 'balanced') {
@@ -1504,7 +1716,9 @@
                     canvas.height = Math.round(srcH * scale);
                     const ctx = canvas.getContext('2d');
 
-                    if (filterMode === 'highcontrast') {
+                    if (filterMode === 'printable') {
+                        ctx.filter = 'contrast(125%) saturate(105%) brightness(102%)';
+                    } else if (filterMode === 'highcontrast') {
                         ctx.filter = 'contrast(160%) brightness(110%)';
                     } else if (filterMode === 'grayscale') {
                         ctx.filter = 'grayscale(100%)';
@@ -1512,6 +1726,12 @@
                         ctx.filter = 'sepia(100%)';
                     } else if (filterMode === 'brightness') {
                         ctx.filter = 'brightness(120%)';
+                    } else if (filterMode === 'invert') {
+                        ctx.filter = 'invert(100%) hue-rotate(180deg)';
+                    } else if (filterMode === 'cooltone') {
+                        ctx.filter = 'sepia(40%) hue-rotate(180deg) saturate(120%)';
+                    } else if (filterMode === 'warmtone') {
+                        ctx.filter = 'sepia(70%) saturate(140%) brightness(105%)';
                     } else {
                         ctx.filter = 'none';
                     }
