@@ -1398,102 +1398,109 @@
     let isDragging = false;
     let activeHandle = null;
     let startX = 0, startY = 0;
-    let startRect = { x: 0, y: 0, w: 0, h: 0 };
+    let startCropRect = { x: 0, y: 0, w: 0, h: 0 };
 
-    const boxOverlay = document.getElementById('cropBoxOverlay');
-    
-    boxOverlay.addEventListener('pointerdown', (e) => {
-        if (e.target.classList.contains('crop-handle')) {
-            activeHandle = e.target.getAttribute('data-handle');
-        } else {
-            activeHandle = 'move';
-        }
+    const cropBoxOverlay = document.getElementById('cropBoxOverlay');
+    cropBoxOverlay.addEventListener('mousedown', startDrag);
+    cropBoxOverlay.addEventListener('touchstart', startDrag, { passive: false });
+
+    document.querySelectorAll('.crop-handle').forEach(handle => {
+        handle.addEventListener('mousedown', startResize);
+        handle.addEventListener('touchstart', startResize, { passive: false });
+    });
+
+    function startDrag(e) {
+        if (e.target.classList.contains('crop-handle')) return;
         isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        startRect = { ...cropRect };
-        boxOverlay.setPointerCapture(e.pointerId);
+        activeHandle = 'move';
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        startX = clientX;
+        startY = clientY;
+        startCropRect = { ...cropRect };
+        e.preventDefault();
+    }
+
+    function startResize(e) {
+        isDragging = true;
+        activeHandle = e.target.getAttribute('data-handle');
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        startX = clientX;
+        startY = clientY;
+        startCropRect = { ...cropRect };
         e.stopPropagation();
         e.preventDefault();
-    });
+    }
 
-    window.addEventListener('pointermove', (e) => {
+    window.addEventListener('mousemove', onDragMove);
+    window.addEventListener('touchmove', onDragMove, { passive: false });
+    window.addEventListener('mouseup', onDragEnd);
+    window.addEventListener('touchend', onDragEnd);
+
+    function onDragMove(e) {
         if (!isDragging || !cropSourceImage) return;
-        const dx = (e.clientX - startX) * (cropSourceImage.width / renderedImgLayout.displayW);
-        const dy = (e.clientY - startY) * (cropSourceImage.height / renderedImgLayout.displayH);
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-        let { x, y, w, h } = startRect;
-        const maxW = cropSourceImage.width;
-        const maxH = cropSourceImage.height;
+        const layout = renderedImgLayout;
+        const scaleX = cropSourceImage.width / layout.displayW;
+        const scaleY = cropSourceImage.height / layout.displayH;
+
+        const dx = (clientX - startX) * scaleX;
+        const dy = (clientY - startY) * scaleY;
 
         if (activeHandle === 'move') {
-            x = Math.max(0, Math.min(maxW - w, startRect.x + dx));
-            y = Math.max(0, Math.min(maxH - h, startRect.y + dy));
-        } else if (activeHandle === 'tl') {
-            let newX = Math.max(0, Math.min(startRect.x + startRect.w - 50, startRect.x + dx));
-            let newY = Math.max(0, Math.min(startRect.y + startRect.h - 50, startRect.y + dy));
-            w = startRect.w - (newX - startRect.x);
-            h = startRect.h - (newY - startRect.y);
-            x = newX;
-            y = newY;
-        } else if (activeHandle === 'tr') {
-            let newW = Math.max(50, Math.min(maxW - startRect.x, startRect.w + dx));
-            let newY = Math.max(0, Math.min(startRect.y + startRect.h - 50, startRect.y + dy));
-            h = startRect.h - (newY - startRect.y);
-            w = newW;
-            y = newY;
-        } else if (activeHandle === 'bl') {
-            let newX = Math.max(0, Math.min(startRect.x + startRect.w - 50, startRect.x + dx));
-            let newH = Math.max(50, Math.min(maxH - startRect.y, startRect.h + dy));
-            w = startRect.w - (newX - startRect.x);
-            h = newH;
-            x = newX;
-        } else if (activeHandle === 'br') {
-            w = Math.max(50, Math.min(maxW - startRect.x, startRect.w + dx));
-            h = Math.max(50, Math.min(maxH - startRect.y, startRect.h + dy));
-        } else if (activeHandle === 'tc') {
-            let newY = Math.max(0, Math.min(startRect.y + startRect.h - 50, startRect.y + dy));
-            h = startRect.h - (newY - startRect.y);
-            y = newY;
-        } else if (activeHandle === 'bc') {
-            h = Math.max(50, Math.min(maxH - startRect.y, startRect.h + dy));
-        } else if (activeHandle === 'ml') {
-            let newX = Math.max(0, Math.min(startRect.x + startRect.w - 50, startRect.x + dx));
-            w = startRect.w - (newX - startRect.x);
-            x = newX;
-        } else if (activeHandle === 'mr') {
-            w = Math.max(50, Math.min(maxW - startRect.x, startRect.w + dx));
+            let newX = startCropRect.x + dx;
+            let newY = startCropRect.y + dy;
+            newX = Math.max(0, Math.min(newX, cropSourceImage.width - startCropRect.w));
+            newY = Math.max(0, Math.min(newY, cropSourceImage.height - startCropRect.h));
+            cropRect.x = newX;
+            cropRect.y = newY;
+        } else {
+            let { x, y, w, h } = startCropRect;
+            if (activeHandle.includes('l')) {
+                let potentialX = x + dx;
+                let potentialW = w - dx;
+                if (potentialW < 40) { potentialW = 40; potentialX = x + w - 40; }
+                if (potentialX < 0) { potentialW += potentialX; potentialX = 0; }
+                cropRect.x = potentialX;
+                cropRect.w = potentialW;
+            }
+            if (activeHandle.includes('r')) {
+                let potentialW = w + dx;
+                if (potentialW < 40) potentialW = 40;
+                if (x + potentialW > cropSourceImage.width) potentialW = cropSourceImage.width - x;
+                cropRect.w = potentialW;
+            }
+            if (activeHandle.includes('t')) {
+                let potentialY = y + dy;
+                let potentialH = h - dy;
+                if (potentialH < 40) { potentialH = 40; potentialY = y + h - 40; }
+                if (potentialY < 0) { potentialH += potentialY; potentialY = 0; }
+                cropRect.y = potentialY;
+                cropRect.h = potentialH;
+            }
+            if (activeHandle.includes('b')) {
+                let potentialH = h + dy;
+                if (potentialH < 40) potentialH = 40;
+                if (y + potentialH > cropSourceImage.height) potentialH = cropSourceImage.height - y;
+                cropRect.h = potentialH;
+            }
         }
-
-        cropRect = { x, y, w, h };
         updateCropBoxDOM();
         e.preventDefault();
-    });
+    }
 
-    window.addEventListener('pointerup', (e) => {
-        if (isDragging) {
-            isDragging = false;
-            activeHandle = null;
-        }
-    });
+    function onDragEnd() {
+        isDragging = false;
+        activeHandle = null;
+    }
 
     function resetCropSelection() {
         if (!cropSourceImage) return;
         cropRect = { x: 0, y: 0, w: cropSourceImage.width, h: cropSourceImage.height };
         updateCropBoxDOM();
-    }
-
-    function saveCropSelection() {
-        if (activeCropIndex === null || !cropSourceImage) return;
-        
-        if (cropRect.x <= 2 && cropRect.y <= 2 && Math.abs(cropRect.w - cropSourceImage.width) <= 5 && Math.abs(cropRect.h - cropSourceImage.height) <= 5) {
-            currentImageItems[activeCropIndex].crop = null;
-        } else {
-            currentImageItems[activeCropIndex].crop = { ...cropRect };
-        }
-
-        closeCropModal();
-        renderImagePreviews();
     }
 
     function closeCropModal() {
@@ -1502,290 +1509,277 @@
         cropSourceImage = null;
     }
 
-    function updateButtonStates() {
-        const isVerified = document.getElementById('captchaCheck').checked;
-        document.getElementById('compressBtn').disabled = !(isVerified && currentCompressFile);
-        document.getElementById('mergeBtn').disabled = !(isVerified && currentMergeFiles.length >= 2);
-        document.getElementById('splitBtn').disabled = !(isVerified && currentSplitFile);
-        document.getElementById('imgBtn').disabled = !(isVerified && currentImageItems.length > 0);
+    function saveCropSelection() {
+        if (activeCropIndex !== null && cropSourceImage) {
+            currentImageItems[activeCropIndex].crop = { ...cropRect };
+            renderImagePreviews();
+        }
+        closeCropModal();
     }
 
+    function updateButtonStates() {
+        const isChecked = document.getElementById('captchaCheck').checked;
+        document.getElementById('compressBtn').disabled = !isChecked || !currentCompressFile;
+        document.getElementById('mergeBtn').disabled = !isChecked || currentMergeFiles.length < 2;
+        document.getElementById('splitBtn').disabled = !isChecked || !currentSplitFile || !document.getElementById('splitPages').value.trim();
+        document.getElementById('imgBtn').disabled = !isChecked || currentImageItems.length === 0;
+    }
+
+    document.getElementById('splitPages').addEventListener('input', updateButtonStates);
+
     async function compressPDF() {
-        if (!currentCompressFile) return;
-        const statusBox = document.getElementById('status1');
-        const resultCard = document.getElementById('result1');
-        statusBox.style.display = 'block';
-        statusBox.innerText = 'Processing PDF locally... Please wait.';
-        resultCard.style.display = 'none';
+        const docType = document.getElementById('docType').value;
+        const targetPct = parseInt(document.getElementById('reductionPct').value);
+        const btn = document.getElementById('compressBtn');
+        const status = document.getElementById('status1');
+        const result = document.getElementById('result1');
+
+        if (!currentCompressFile) { alert('Please select a file!'); return; }
+        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
 
         try {
             const arrayBuffer = await currentCompressFile.arrayBuffer();
-            const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-            const compressedPdfBytes = await pdfDoc.save({ useObjectStreams: true });
-            
-            const blob = new Blob([compressedPdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            
-            const downloadLink = document.getElementById('downloadLink1');
-            downloadLink.href = url;
-            
-            const originalSize = currentCompressFile.size;
-            const newSize = blob.size;
-            const savedPct = Math.max(5, Math.round((1 - (newSize / originalSize)) * 100));
+            let compressedBlob;
 
-            document.getElementById('resultStats1').innerHTML = `✅ Successfully Optimized!<br>Original: <strong>${formatBytes(originalSize)}</strong> → Compressed: <strong>${formatBytes(newSize)}</strong> (~${savedPct}% smaller)`;
-            statusBox.style.display = 'none';
-            resultCard.style.display = 'block';
-        } catch (err) {
-            statusBox.innerText = 'Error processing PDF: ' + err.message;
+            if (docType === 'text') {
+                status.innerText = 'Optimizing text streams...[cite: 6]';
+                const { PDFDocument } = PDFLib;
+                const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
+                compressedBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+            } else {
+                // Integrated high-compression scanned PDF pipeline from AJS PDF Suit Final
+                compressedBlob = await compressScannedPdf(arrayBuffer, targetPct, status);
+            }
+
+            const downloadLink = document.getElementById('downloadLink1');
+            downloadLink.href = URL.createObjectURL(compressedBlob);
+            downloadLink.download = `AJS_compressed_${currentCompressFile.name}`;
+            
+            const origSize = currentCompressFile.size;
+            const newSize = compressedBlob.size;
+            const diffPct = Math.max(0, Math.round(((origSize - newSize) / origSize) * 100));
+            document.getElementById('resultStats1').innerHTML = `Original: <strong>${formatBytes(origSize)}</strong> | Compressed: <strong>${formatBytes(newSize)}</strong> <br>Reduction: <span style="color:var(--success-color); font-weight:800;">~${diffPct}% smaller</span>`;
+            
+            result.style.display = 'block';
+        } catch(e) {
+            alert('Compression error: ' + e.message);
+        } finally {
+            btn.disabled = false;
+            status.style.display = 'none';
         }
     }
 
+    async function compressScannedPdf(arrayBuffer, targetPct, statusElement) {
+        const { PDFDocument } = PDFLib;
+        const srcPdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const outPdf = await PDFDocument.create();
+        
+        // Superior compression scaling mapping from AJS PDF Suit Final
+        const maxDimension = Math.round(1400 - ((targetPct / 100) * 600));
+        const jpegQuality = Math.max(0.15, 0.75 - ((targetPct / 100) * 0.55));
+
+        for (let i = 1; i <= srcPdf.numPages; i++) {
+            statusElement.innerText = `Processing Page ${i} of ${srcPdf.numPages}...[cite: 6]`;
+            const page = await srcPdf.getPage(i);
+            const baseViewport = page.getViewport({ scale: 1.0 });
+            const currentMax = Math.max(baseViewport.width, baseViewport.height);
+            const scale = currentMax > maxDimension ? (maxDimension / currentMax) : 0.9;
+            const viewport = page.getViewport({ scale: scale });
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+            const imgDataUrl = canvas.toDataURL('image/jpeg', jpegQuality);
+            const embeddedImg = await outPdf.embedJpg(imgDataUrl);
+            const newPage = outPdf.addPage([viewport.width, viewport.height]);
+            newPage.drawImage(embeddedImg, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+        }
+        const outBytes = await outPdf.save();
+        return new Blob([outBytes], { type: 'application/pdf' });
+    }
+
     async function mergePDFs() {
-        if (currentMergeFiles.length < 2) return;
-        const statusBox = document.getElementById('status2');
-        const resultCard = document.getElementById('result2');
-        statusBox.style.display = 'block';
-        statusBox.innerText = 'Merging PDFs locally...';
-        resultCard.style.display = 'none';
+        const btn = document.getElementById('mergeBtn');
+        const status = document.getElementById('status2');
+        const result = document.getElementById('result2');
+
+        if (currentMergeFiles.length < 2) { alert('Please select at least 2 PDF files!'); return; }
+        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
 
         try {
-            const mergedPdf = await PDFLib.PDFDocument.create();
-            for (let file of currentMergeFiles) {
-                const arrayBuffer = await file.arrayBuffer();
-                const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
-                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices ? pdf.getPageIndices() : Array.from({length: pdf.getPageCount()}, (_, i) => i));
+            const { PDFDocument } = PDFLib;
+            const mergedPdf = await PDFDocument.create();
+            let totalOrigSize = 0;
+
+            for (let i = 0; i < currentMergeFiles.length; i++) {
+                status.innerText = `Merging file ${i + 1} of ${currentMergeFiles.length}...[cite: 6]`;
+                totalOrigSize += currentMergeFiles[i].size;
+                const arrayBuffer = await currentMergeFiles[i].arrayBuffer();
+                const pdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
                 copiedPages.forEach((page) => mergedPdf.addPage(page));
             }
-            const mergedPdfBytes = await mergedPdf.save();
-            const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
 
+            const mergedBytes = await mergedPdf.save();
+            const blob = new Blob([mergedBytes], { type: 'application/pdf' });
             const downloadLink = document.getElementById('downloadLink2');
-            downloadLink.href = url;
-
-            document.getElementById('resultStats2').innerHTML = `✅ Successfully Merged ${currentMergeFiles.length} files!<br>Total Size: <strong>${formatBytes(blob.size)}</strong>`;
-            statusBox.style.display = 'none';
-            resultCard.style.display = 'block';
-        } catch (err) {
-            statusBox.innerText = 'Error merging PDFs: ' + err.message;
+            downloadLink.href = URL.createObjectURL(blob);
+            
+            document.getElementById('resultStats2').innerHTML = `Combined ${currentMergeFiles.length} files | Total Size: <strong>${formatBytes(blob.size)}</strong>`;
+            result.style.display = 'block';
+        } catch(e) {
+            alert('Merge error: ' + e.message);
+        } finally {
+            btn.disabled = false;
+            status.style.display = 'none';
         }
     }
 
     async function splitPDF() {
-        if (!currentSplitFile) return;
-        const statusBox = document.getElementById('status3');
-        const resultCard = document.getElementById('result3');
-        const pageRangeStr = document.getElementById('splitPages').value.trim();
-        statusBox.style.display = 'block';
-        statusBox.innerText = 'Splitting PDF locally...';
-        resultCard.style.display = 'none';
+        const pagesInput = document.getElementById('splitPages').value;
+        const btn = document.getElementById('splitBtn');
+        const status = document.getElementById('status3');
+        const result = document.getElementById('result3');
+
+        if (!currentSplitFile || !pagesInput) { alert('Please select a file and enter page numbers!'); return; }
+        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
 
         try {
+            const { PDFDocument } = PDFLib;
             const arrayBuffer = await currentSplitFile.arrayBuffer();
-            const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-            const totalPages = pdfDoc.getPageCount();
-            
-            let pagesToExtract = [];
-            if (!pageRangeStr) {
-                pagesToExtract = [0];
-            } else {
-                const parts = pageRangeStr.split(',');
-                parts.forEach(part => {
-                    if (part.includes('-')) {
-                        const range = part.split('-').map(n => parseInt(n.trim()) - 1);
-                        for (let i = range[0]; i <= range[1]; i++) {
-                            if (i >= 0 && i < totalPages) pagesToExtract.push(i);
-                        }
-                    } else {
-                        const pageNum = parseInt(part.trim()) - 1;
-                        if (pageNum >= 0 && pageNum < totalPages) pagesToExtract.push(pageNum);
-                    }
-                });
-            }
+            const srcDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+            const newDoc = await PDFDocument.create();
 
-            if (pagesToExtract.length === 0) {
-                throw new Error('Invalid page range specified.');
-            }
+            let pageIndices = [];
+            const parts = pagesInput.split(',');
+            parts.forEach(part => {
+                if (part.includes('-')) {
+                    let range = part.split('-');
+                    let start = parseInt(range[0]) - 1;
+                    let end = parseInt(range[1]) - 1;
+                    for (let p = start; p <= end; p++) pageIndices.push(p);
+                } else {
+                    pageIndices.push(parseInt(part) - 1);
+                }
+            });
 
-            const newPdf = await PDFLib.PDFDocument.create();
-            const copiedPages = await newPdf.copyPages(pdfDoc, pagesToExtract);
-            copiedPages.forEach(page => newPdf.addPage(page));
+            const validIndices = pageIndices.filter(i => i >= 0 && i < srcDoc.getPageCount());
+            const copiedPages = await newDoc.copyPages(srcDoc, validIndices);
+            copiedPages.forEach(page => newDoc.addPage(page));
 
-            const pdfBytes = await newPdf.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-
+            const splitBytes = await newDoc.save();
+            const blob = new Blob([splitBytes], { type: 'application/pdf' });
             const downloadLink = document.getElementById('downloadLink3');
-            downloadLink.href = url;
+            downloadLink.href = URL.createObjectURL(blob);
 
-            document.getElementById('resultStats3').innerHTML = `✅ Successfully Extracted ${pagesToExtract.length} page(s)!<br>File Size: <strong>${formatBytes(blob.size)}</strong>`;
-            statusBox.style.display = 'none';
-            resultCard.style.display = 'block';
-        } catch (err) {
-            statusBox.innerText = 'Error splitting PDF: ' + err.message;
+            document.getElementById('resultStats3').innerHTML = `Extracted ${validIndices.length} page(s) | Size: <strong>${formatBytes(blob.size)}</strong>`;
+            result.style.display = 'block';
+        } catch(e) {
+            alert('Split error. Check page range format.');
+        } finally {
+            btn.disabled = false;
+            status.style.display = 'none';
         }
     }
 
     async function convertImagesToPDF() {
-        if (currentImageItems.length === 0) return;
-        const statusBox = document.getElementById('status4');
-        const resultCard = document.getElementById('result4');
-        statusBox.style.display = 'block';
-        statusBox.innerText = 'Converting & processing images locally...';
-        resultCard.style.display = 'none';
+        const btn = document.getElementById('imgBtn');
+        const status = document.getElementById('status4');
+        const result = document.getElementById('result4');
+        const qualityMode = document.getElementById('imgQualityMode').value;
+        const filterMode = document.getElementById('imgFilterMode').value;
+
+        if (currentImageItems.length === 0) { alert('Please select image files!'); return; }
+        btn.disabled = true; status.style.display = 'block'; result.style.display = 'none';
 
         try {
-            const qualityMode = document.getElementById('imgQualityMode').value;
-            const filterMode = document.getElementById('imgFilterMode').value;
+            const { PDFDocument } = PDFLib;
+            const pdfDoc = await PDFDocument.create();
 
-            const pdfDoc = await PDFLib.PDFDocument.create();
+            for (let i = 0; i < currentImageItems.length; i++) {
+                status.innerText = `Processing image ${i + 1} of ${currentImageItems.length}...`;
+                const item = currentImageItems[i];
+                
+                const arrayBuffer = await item.file.arrayBuffer();
+                const blob = new Blob([arrayBuffer]);
+                const bitmap = await createImageBitmap(blob);
 
-            for (let item of currentImageItems) {
-                let imgBytes;
-
-                if (qualityMode === 'original' && filterMode === 'none' && !item.crop) {
-                    imgBytes = await item.file.arrayBuffer();
-                } else {
-                    imgBytes = await processImageWithCanvas(item, qualityMode, filterMode);
+                let srcX = 0, srcY = 0, srcW = bitmap.width, srcH = bitmap.height;
+                if (item.crop) {
+                    srcX = item.crop.x;
+                    srcY = item.crop.y;
+                    srcW = item.crop.w;
+                    srcH = item.crop.h;
                 }
 
-                let embeddedImage;
-                try {
-                    embeddedImage = await pdfDoc.embedJpg(imgBytes);
-                } catch {
-                    try {
-                        embeddedImage = await pdfDoc.embedPng(imgBytes);
-                    } catch {
-                        const baseConv = await processImageFallbackToJpeg(imgBytes);
-                        embeddedImage = await pdfDoc.embedJpg(baseConv);
-                    }
+                let scaleFactor = 1.0;
+                let jpegQual = 0.92;
+
+                if (qualityMode === 'best') {
+                    scaleFactor = 1.2;
+                    jpegQual = 0.95;
+                } else if (qualityMode === 'balanced') {
+                    scaleFactor = 0.9;
+                    jpegQual = 0.78;
+                } else if (qualityMode === 'compressed') {
+                    scaleFactor = 0.65;
+                    jpegQual = 0.55;
                 }
 
-                const page = pdfDoc.addPage([embeddedImage.width, embeddedImage.height]);
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.round(srcW * scaleFactor);
+                canvas.height = Math.round(srcH * scaleFactor);
+                const ctx = canvas.getContext('2d');
+
+                if (filterMode === 'printable') {
+                    ctx.filter = 'contrast(125%) saturate(105%) brightness(102%)';
+                } else if (filterMode === 'highcontrast') {
+                    ctx.filter = 'contrast(160%) brightness(110%)';
+                } else if (filterMode === 'grayscale') {
+                    ctx.filter = 'grayscale(100%)';
+                } else if (filterMode === 'sepia') {
+                    ctx.filter = 'sepia(100%)';
+                } else if (filterMode === 'brightness') {
+                    ctx.filter = 'brightness(120%)';
+                } else if (filterMode === 'invert') {
+                    ctx.filter = 'invert(100%) hue-rotate(180deg)';
+                } else if (filterMode === 'cooltone') {
+                    ctx.filter = 'sepia(40%) hue-rotate(180deg) saturate(120%)';
+                } else if (filterMode === 'warmtone') {
+                    ctx.filter = 'sepia(70%) saturate(140%) brightness(105%)';
+                }
+
+                ctx.drawImage(bitmap, srcX, srcY, srcW, srcH, 0, 0, canvas.width, canvas.height);
+
+                const imgDataUrl = canvas.toDataURL('image/jpeg', jpegQual);
+                const embeddedImage = await pdfDoc.embedJpg(imgDataUrl);
+
+                const page = pdfDoc.addPage([canvas.width, canvas.height]);
                 page.drawImage(embeddedImage, {
                     x: 0,
                     y: 0,
-                    width: embeddedImage.width,
-                    height: embeddedImage.height,
+                    width: canvas.width,
+                    height: canvas.height,
                 });
             }
 
             const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-
+            const outBlob = new Blob([pdfBytes], { type: 'application/pdf' });
             const downloadLink = document.getElementById('downloadLink4');
-            downloadLink.href = url;
+            downloadLink.href = URL.createObjectURL(outBlob);
 
-            document.getElementById('resultStats4').innerHTML = `✅ Successfully Converted ${currentImageItems.length} image(s)!<br>File Size: <strong>${formatBytes(blob.size)}</strong>`;
-            statusBox.style.display = 'none';
-            resultCard.style.display = 'block';
-        } catch (err) {
-            statusBox.innerText = 'Error converting images: ' + err.message;
+            document.getElementById('resultStats4').innerHTML = `Converted ${currentImageItems.length} image(s) | Final Size: <strong>${formatBytes(outBlob.size)}</strong>`;
+            result.style.display = 'block';
+        } catch (e) {
+            alert('Image conversion error: ' + e.message);
+        } finally {
+            btn.disabled = false;
+            status.style.display = 'none';
         }
-    }
-
-    function processImageWithCanvas(item, qualityMode, filterMode) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    
-                    let srcX = 0, srcY = 0, srcW = img.width, srcH = img.height;
-                    if (item.crop) {
-                        srcX = item.crop.x;
-                        srcY = item.crop.y;
-                        srcW = item.crop.w;
-                        srcH = item.crop.h;
-                    }
-
-                    let scale = 1.0;
-                    let jpegQuality = 0.92;
-
-                    if (filterMode === 'printable') {
-                        scale = 1.25; 
-                        jpegQuality = 0.98;
-                    } else if (qualityMode === 'best') {
-                        scale = 1.0;
-                        jpegQuality = 0.95;
-                    } else if (qualityMode === 'balanced') {
-                        scale = 0.85;
-                        jpegQuality = 0.80;
-                    } else if (qualityMode === 'compressed') {
-                        scale = 0.65;
-                        jpegQuality = 0.60;
-                    }
-
-                    canvas.width = Math.round(srcW * scale);
-                    canvas.height = Math.round(srcH * scale);
-                    const ctx = canvas.getContext('2d');
-
-                    if (filterMode === 'printable') {
-                        ctx.filter = 'contrast(125%) saturate(105%) brightness(102%)';
-                    } else if (filterMode === 'highcontrast') {
-                        ctx.filter = 'contrast(160%) brightness(110%)';
-                    } else if (filterMode === 'grayscale') {
-                        ctx.filter = 'grayscale(100%)';
-                    } else if (filterMode === 'sepia') {
-                        ctx.filter = 'sepia(100%)';
-                    } else if (filterMode === 'brightness') {
-                        ctx.filter = 'brightness(120%)';
-                    } else if (filterMode === 'invert') {
-                        ctx.filter = 'invert(100%) hue-rotate(180deg)';
-                    } else if (filterMode === 'cooltone') {
-                        ctx.filter = 'sepia(40%) hue-rotate(180deg) saturate(120%)';
-                    } else if (filterMode === 'warmtone') {
-                        ctx.filter = 'sepia(70%) saturate(140%) brightness(105%)';
-                    } else {
-                        ctx.filter = 'none';
-                    }
-
-                    ctx.drawImage(img, srcX, srcY, srcW, srcH, 0, 0, canvas.width, canvas.height);
-
-                    canvas.toBlob((blob) => {
-                        if (!blob) {
-                            reject(new Error('Canvas conversion failed'));
-                            return;
-                        }
-                        const reader2 = new FileReader();
-                        reader2.onload = function(e2) {
-                            resolve(e2.target.result);
-                        };
-                        reader2.onerror = reject;
-                        reader2.readAsArrayBuffer(blob);
-                    }, 'image/jpeg', jpegQuality);
-                };
-                img.onerror = reject;
-                img.src = e.target.result;
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(item.file);
-        });
-    }
-
-    function processImageFallbackToJpeg(arrayBuffer) {
-        return new Promise((resolve, reject) => {
-            const blob = new Blob([arrayBuffer]);
-            const url = URL.createObjectURL(blob);
-            const img = new Image();
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                canvas.toBlob((b) => {
-                    const r = new FileReader();
-                    r.onload = (e) => resolve(e.target.result);
-                    r.readAsArrayBuffer(b);
-                }, 'image/jpeg', 0.9);
-            };
-            img.onerror = reject;
-            img.src = url;
-        });
     }
 </script>
 
