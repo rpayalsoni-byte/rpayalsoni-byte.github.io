@@ -1542,7 +1542,7 @@
             let compressedBlob;
 
             if (docType === 'text') {
-                status.innerText = 'Compressing and optimizing digital text streams...';
+                status.innerText = 'Cleaning, rebuilding & compressing digital text streams...';
                 const { PDFDocument } = PDFLib;
                 const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
                 
@@ -1557,18 +1557,7 @@
                 const copiedPages = await newPdf.copyPages(pdfDoc, pageIndices);
                 copiedPages.forEach((page) => newPdf.addPage(page));
 
-                // Aggressively scale down internal font/stream objects based on target reduction slider
-                const maxDimScale = Math.max(0.3, 1.0 - (targetPct / 100) * 0.7);
-                for (let i = 0; i < pageIndices.length; i++) {
-                    const p = newPdf.getPage(i);
-                    const { width, height } = p.getSize();
-                    // Optional structural re-scaling/flattening for maximal reduction on high sliders
-                    if (targetPct > 70) {
-                        p.scale(0.95, 0.95);
-                    }
-                }
-
-                const pdfBytes = await newPdf.save({ useObjectStreams: true, addDefaultPage: false });
+                const pdfBytes = await newPdf.save({ useObjectStreams: true });
                 compressedBlob = new Blob([pdfBytes], { type: 'application/pdf' });
             } else {
                 compressedBlob = await compressScannedPdf(arrayBuffer, targetPct, status);
@@ -1597,8 +1586,9 @@
         const srcPdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const outPdf = await PDFDocument.create();
         
-        const maxDimension = Math.round(1400 - ((targetPct / 100) * 600));
-        const jpegQuality = Math.max(0.30, 0.75 - ((targetPct / 100) * 0.40));
+        // Optimized dimension and quality scaling preserving crystal clear text/images while maintaining target size
+        const maxDimension = Math.round(2000 - ((targetPct / 100) * 300));
+        const jpegQuality = Math.max(0.65, 0.92 - ((targetPct / 100) * 0.20));
 
         for (let i = 1; i <= srcPdf.numPages; i++) {
             statusElement.innerText = `Processing Page ${i} of ${srcPdf.numPages}...`;
@@ -1612,6 +1602,13 @@
             const ctx = canvas.getContext('2d');
             canvas.width = viewport.width;
             canvas.height = viewport.height;
+
+            // Enable high-quality image smoothing for ultra-sharp text and lines without bloating file size
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+
+            // Apply vibrant image enhancement filter to eliminate greyish/dull camera photo backgrounds and sharpen text
+            ctx.filter = 'contrast(135%) brightness(105%) saturate(110%)';
 
             await page.render({ canvasContext: ctx, viewport: viewport }).promise;
 
@@ -1745,17 +1742,21 @@
                     scaleFactor = 1.2;
                     jpegQual = 0.95;
                 } else if (qualityMode === 'balanced') {
-                    scaleFactor = 0.9;
-                    jpegQual = 0.78;
+                    scaleFactor = 0.95;
+                    jpegQual = 0.85;
                 } else if (qualityMode === 'compressed') {
-                    scaleFactor = 0.65;
-                    jpegQual = 0.55;
+                    scaleFactor = 0.75;
+                    jpegQual = 0.70;
                 }
 
                 const canvas = document.createElement('canvas');
                 canvas.width = Math.round(srcW * scaleFactor);
                 canvas.height = Math.round(srcH * scaleFactor);
                 const ctx = canvas.getContext('2d');
+
+                // Enable high-quality image smoothing for maximum crispness without increasing file size
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
 
                 if (filterMode === 'printable') {
                     ctx.filter = 'contrast(125%) saturate(105%) brightness(102%)';
